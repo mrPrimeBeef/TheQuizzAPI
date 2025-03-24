@@ -2,7 +2,6 @@ package app.utils;
 
 
 import app.daos.QuestionDao;
-import app.daos.RoleDao;
 import app.daos.SecurityDAO;
 import app.entities.Question;
 import app.entities.User;
@@ -20,7 +19,6 @@ public class Populator {
 
     private static void usersAndRoles(EntityManagerFactory emf) {
         SecurityDAO securityDAO = SecurityDAO.getInstance(emf);
-        RoleDao roleDao = RoleDao.getInstance();
 
         User user1 = new User("Villager", "1234");
         User user2 = new User("PineBoxJim", "4321");
