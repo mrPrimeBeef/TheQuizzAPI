@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,6 +17,9 @@ public class User implements ISecurityUser {
     @Id
     private String username;
     private String password;
+
+    @ManyToMany
+    private List<Game> games;
 
     @Setter
     @ManyToMany

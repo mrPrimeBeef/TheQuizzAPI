@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.entities.enums.GameMode;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -8,6 +9,9 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToMany (mappedBy = "games")
+    private List<User> users;
 
     @OneToMany
     private List<Player> players;
@@ -19,4 +23,7 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
     private List<Question> questions;
+    @Enumerated(EnumType.STRING)
+    private GameMode gameMode;
+
 }
