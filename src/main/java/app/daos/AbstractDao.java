@@ -24,7 +24,7 @@ public abstract class AbstractDao<T, I> {
         }
     }
 
-    public T findById(I id) {
+    public T findById(Object id) {
         try (EntityManager em = emf.createEntityManager()) {
             return em.find(entityClass, id);
         }

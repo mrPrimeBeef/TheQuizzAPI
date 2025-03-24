@@ -2,9 +2,12 @@ package app.entities;
 
 import app.entities.enums.GameMode;
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.util.List;
 
 @Entity
+@Getter
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +26,13 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
     private List<Question> questions;
+
     @Enumerated(EnumType.STRING)
     private GameMode gameMode;
 
+    public Game(List<Player> players, List<Question> questions, GameMode gameMode) {
+        this.players = players;
+        this.questions = questions;
+        this.gameMode = gameMode;
+    }
 }

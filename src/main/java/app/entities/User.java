@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,13 +22,8 @@ public class User implements ISecurityUser {
     @ManyToMany
     private List<Game> games;
 
-    @Setter
-    @ManyToMany
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "name")
-    )
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     Set<Role> roles = new HashSet<>();
 
     public User() {
@@ -50,17 +46,13 @@ public class User implements ISecurityUser {
 
     @Override
     public void addRole(Role role) {
-        roles.add(role);
-        role.users.add(this);
+        if (role != null) {
+            roles.add(role);
+        }
     }
 
     @Override
     public void removeRole(String role) {
-            for (Role roleEntity : roles){
-                if (roleEntity.getName().equals(role)){
-                    roles.remove(roleEntity);
-                    roleEntity.users.remove(this);
-                }
-            }
+        roles.remove(role);
     }
 }

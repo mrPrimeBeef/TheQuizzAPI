@@ -7,6 +7,7 @@ import app.entities.enums.Difficulty;
 import app.exceptions.ApiException;
 import app.utils.ApiReader;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -21,7 +22,15 @@ public class OpentdbService {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         // hent ny token https://opentdb.com/api_token.php?command=request
-        String token = "e735a90c748210b9d192143e3af20a1571a3c00c70ea2356e0562e3c4e17a914";
+        String tokenResponse = ApiReader.getDataFromUrl("https://opentdb.com/api_token.php?command=request");
+        String token;
+        try {
+            JsonNode tokenNode = objectMapper.readTree(tokenResponse);
+            token = tokenNode.get("token").asText();
+        } catch (Exception e) {
+            throw new ApiException("Failed to parse token from API response", e);
+        }
+
         String url = "https://opentdb.com/api.php?amount=50&category=18&token=" + token;
 
         try {
