@@ -4,7 +4,10 @@ import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
 import app.controller.GameController;
 import app.controller.SecurityController;
+import app.daos.GameDao;
+import app.daos.PlayerDao;
 import app.rest.Routes;
+import app.services.GameService;
 import jakarta.persistence.EntityManagerFactory;
 
 public class Main {
@@ -13,8 +16,11 @@ public class Main {
 
 //        Populator.questionAndUserData(emf);
 
+        PlayerDao playerDao = PlayerDao.getInstance();
+        GameDao gameDao = GameDao.getInstance();
+        GameService gameService = new GameService(gameDao, playerDao);
         SecurityController securityController = new SecurityController();
-        GameController gameController = new GameController();
+        GameController gameController = new GameController(gameService);
 
         Routes routes = new Routes(securityController, gameController);
 
