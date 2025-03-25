@@ -2,7 +2,8 @@ package app.dtos;
 
 import java.util.List;
 
-public record QuestionBody(
+public record QuestionResponseBody(
+        String type,
         String difficulty,
         String category,
         String question,

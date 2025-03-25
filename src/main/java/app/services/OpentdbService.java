@@ -1,7 +1,7 @@
 package app.services;
 
-import app.dtos.QuestionBody;
-import app.dtos.QuestionDTO;
+import app.dtos.QuestionResponseBody;
+import app.dtos.QuestionResponseDTO;
 import app.entities.Question;
 import app.entities.enums.Difficulty;
 import app.exceptions.ApiException;
@@ -40,8 +40,8 @@ public class OpentdbService {
                     throw new ApiException("Failed to fetch data from API");
                 }
 
-                QuestionDTO response = objectMapper.readValue(json, QuestionDTO.class);
-                for (QuestionBody b : response.results()) {
+                QuestionResponseDTO response = objectMapper.readValue(json, QuestionResponseDTO.class);
+                for (QuestionResponseBody b : response.results()) {
                     Difficulty difficulty = Difficulty.valueOf(b.difficulty().toUpperCase());
                     questionsList.add(new Question(b.question(), b.correct_answer(), b.incorrect_answers(), b.category(), difficulty));
                 }

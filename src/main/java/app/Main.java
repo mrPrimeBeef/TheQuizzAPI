@@ -14,11 +14,12 @@ public class Main {
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
-//        Populator.questionAndUserData(emf);
+//      Populator.questionAndUserData(emf);
 
         PlayerDao playerDao = PlayerDao.getInstance();
         GameDao gameDao = GameDao.getInstance();
         GameService gameService = new GameService(gameDao, playerDao);
+
         SecurityController securityController = new SecurityController();
         GameController gameController = new GameController(gameService);
 

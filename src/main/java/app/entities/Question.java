@@ -3,10 +3,12 @@ package app.entities;
 import app.entities.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 import java.util.List;
 
+@NoArgsConstructor
 @Getter
 @Entity
 public class Question {

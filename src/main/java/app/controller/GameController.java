@@ -1,7 +1,9 @@
 package app.controller;
 
+import app.daos.PlayerDao;
 import app.daos.QuestionDao;
-import app.dtos.PlayerNamesDTO;
+import app.dtos.*;
+import app.entities.Game;
 import app.entities.Player;
 import app.entities.Question;
 import app.exceptions.ValidationException;
@@ -14,12 +16,13 @@ import java.util.stream.Collectors;
 public class GameController {
     private final GameService gameService;
     private QuestionDao questionDao = QuestionDao.getInstance();
+    private PlayerDao playerDao = PlayerDao.getInstance();
 
     public GameController(GameService gameService) {
         this.gameService = gameService;
     }
 
-    public void makeGame(Context ctx) {
+    public GameDTO makeGame(Context ctx) {
         try {
             String limitStr = ctx.queryParam("limit");
 
@@ -54,9 +57,27 @@ public class GameController {
                     .limit(limit)
                     .collect(Collectors.toList());
 
+            List<Player> players = playerDao.findAll();
+
+            Game game = gameService.createGame(players, filteredQuestions);
+
+            List<PlayerNameAndPoints> playerNameAndPointsList = players.stream()
+                    .map(player -> new PlayerNameAndPoints(player.getName(), player.getPoints()))
+                    .toList();
+
+            PlayerNamesDTO playerNamesDTO = new PlayerNamesDTO(playerNameAndPointsList);
+
+            List<QuestionBody> questionBodyList = filteredQuestions.stream()
+                    .map(q -> new QuestionBody(q.getDifficulty().toString(),q.getCategory(), q.getDescription(),q.getRightAnswer(),q.getWrongAnswers()))
+                    .toList();
+            QuestionDTO questionDTO = new QuestionDTO(questionBodyList);
+
+            return new GameDTO(playerNamesDTO,questionDTO);
+
         } catch (Exception e) {
 
         }
+        return null;
     }
 
     public Integer getNumberOfPlayers(Context ctx) {
