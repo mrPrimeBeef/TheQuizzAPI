@@ -1,6 +1,7 @@
 package app.utils;
 
 
+import app.config.HibernateConfig;
 import app.daos.QuestionDao;
 import app.daos.SecurityDAO;
 import app.entities.Question;
@@ -12,6 +13,11 @@ import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 
 public class Populator {
+    public static void main(String[] args) {
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        questionAndUserData(emf);
+    }
+
     public static void questionAndUserData(EntityManagerFactory emf) {
         addQuestions(emf);
         usersAndRoles(emf);
@@ -26,8 +32,8 @@ public class Populator {
         user1.addRole(Role.USER);
         user2.addRole(Role.ADMIN);
 
-        securityDAO.createUser(user1.getUsername(),user1.getPassword());
-        securityDAO.createUser(user2.getUsername(),user2.getPassword());
+        securityDAO.createUser(user1.getUsername(), user1.getPassword());
+        securityDAO.createUser(user2.getUsername(), user2.getPassword());
     }
 
     private static void addQuestions(EntityManagerFactory emf) {
@@ -36,7 +42,7 @@ public class Populator {
 
         List<Question> questions = opentdbService.getComputerSienceQuestions();
 
-        for (Question q : questions){
+        for (Question q : questions) {
             questionDao.create(q);
         }
     }
