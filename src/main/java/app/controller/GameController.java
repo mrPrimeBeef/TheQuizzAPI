@@ -89,4 +89,9 @@ public class GameController {
         PlayerNamesDTO playerNamesDTO = ctx.bodyAsClass(PlayerNamesDTO.class);
         return gameService.createPlayers(playerNamesDTO.players());
     }
+
+    public QuestionBody getOneQuestion() {
+        Question q = questionDao.findById(1);
+        return new QuestionBody(q.getDifficulty().toString(),q.getCategory(),q.getDescription(),q.getRightAnswer(),q.getWrongAnswers());
+    }
 }

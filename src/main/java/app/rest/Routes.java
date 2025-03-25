@@ -4,6 +4,7 @@ import app.controller.GameController;
 import app.controller.ISecurityController;
 import app.controller.SecurityController;
 import app.dtos.GameDTO;
+import app.dtos.QuestionBody;
 import app.entities.Player;
 import app.entities.enums.Role;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,7 @@ public class Routes {
 
     private EndpointGroup protectedGameRoutes() {
         return () -> {
-            post("/api/game/players/{number}", (ctx) ->{
+            post("/api/game/players/{number}", (ctx) -> {
                 try {
                     //TODO find ud af gemme dette tal, så det bruges i create players
                     gameController.getNumberOfPlayers(ctx);
@@ -42,9 +43,9 @@ public class Routes {
                 }
             }, Role.ADMIN, Role.USER);
 
-            post("/api/game/players", (ctx) ->{
+            post("/api/game/players", (ctx) -> {
                 try {
-                   gameController.createPlayers(ctx);
+                    gameController.createPlayers(ctx);
                 } catch (Exception e) {
                     ctx.status(404).json(Map.of("msg", e.getMessage()));
                 }
@@ -63,7 +64,15 @@ public class Routes {
 
     private EndpointGroup authRoutes() {
         return () -> {
-            get("/test", ctx -> ctx.json(jsonMapper.createObjectNode().put("msg", "Hello from Open")), Role.ANYONE);
+            get("/test", ctx -> {
+                try {
+                    QuestionBody questionBody = gameController.getOneQuestion();
+                    ctx.status(200).json(questionBody);
+                } catch (Exception e) {
+                    ctx.status(404).json(Map.of("msg", e.getMessage()));
+                }
+            }, Role.ADMIN, Role.USER);
+
             get("/healthcheck", securityController::healthCheck, Role.ANYONE);
             post("/login", securityController::login, Role.ANYONE);
             post("/register", securityController::register, Role.ANYONE);
