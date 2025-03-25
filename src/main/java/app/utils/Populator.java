@@ -37,7 +37,7 @@ public class Populator {
     }
 
     private static void addQuestions(EntityManagerFactory emf) {
-        QuestionDao questionDao = QuestionDao.getInstance();
+        QuestionDao questionDao = QuestionDao.getInstance(emf);
         OpentdbService opentdbService = new OpentdbService();
 
         List<Question> questions = opentdbService.getComputerSienceQuestions();

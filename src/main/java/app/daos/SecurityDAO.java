@@ -28,9 +28,11 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
     }
 
     @Override
-    public UserDTO getVerifiedUser(String username, String password) throws DaoException, ValidationException {
-
-        User user = instance.findById(username); //Throws DaoException if user not found
+    public UserDTO getVerifiedUser(String username, String password) throws ValidationException, DaoException {
+        User user = findById(username);
+        if (user == null) {
+            throw new DaoException("Error reading object from db");
+        }
         if (!user.verifyPassword(password)) {
             logger.error("{} {}", user.getUsername(), user.getPassword());
             throw new ValidationException("Password does not match");
@@ -57,11 +59,14 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
     }
 
     @Override
-    public User addRoleToUser(String username, Role role) {
-        User foundUser = super.findById(username);
+    public User addRoleToUser(String username, Role role) throws DaoException {
+        User foundUser = findById(username);
+        if (foundUser == null) {
+            throw new DaoException("Error reading object from db");
+        }
         foundUser.addRole(role);
         try {
-            foundUser = super.update(foundUser);
+            foundUser = update(foundUser);
             logger.info("Role added to user (username {}, role {})", username, role);
             return foundUser;
         } catch (Exception e) {
@@ -72,15 +77,18 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
 
     @Override
     public User removeRoleFromUser(String username, Role role) {
-        User foundUserAccount = super.findById(username);
-        foundUserAccount.removeRole(role.toString());
+        User foundUser = findById(username);
+        if (foundUser == null) {
+            throw new DaoException("Error reading object from db");
+        }
+        foundUser.removeRole(role.toString());
         try {
-            foundUserAccount = super.update(foundUserAccount);
-            logger.info("Role removed from user (username {}, role {})", username, role);
-            return foundUserAccount;
+            foundUser = update(foundUser);
+            logger.info("Role added to user (username {}, role {})", username, role);
+            return foundUser;
         } catch (Exception e) {
-            logger.error("Error removing role from user", e);
-            throw new DaoException("Error removing role from user", e);
+            logger.error("Error adding role to user", e);
+            throw new DaoException("Error adding role to user", e);
         }
     }
 }

@@ -9,16 +9,18 @@ import app.entities.Question;
 import app.exceptions.ValidationException;
 import app.services.GameService;
 import io.javalin.http.Context;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameController {
+    EntityManagerFactory emf;
     private final GameService gameService;
-    private QuestionDao questionDao = QuestionDao.getInstance();
-    private PlayerDao playerDao = PlayerDao.getInstance();
+    private QuestionDao questionDao = QuestionDao.getInstance(emf);
+    private PlayerDao playerDao = PlayerDao.getInstance(emf);
 
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, EntityManagerFactory emf) {
         this.gameService = gameService;
     }
 
@@ -48,7 +50,7 @@ public class GameController {
 
             int limit = limitStr != null ? Integer.parseInt(limitStr) : 10;
             if (limit < 0 || limit > 50) {
-                throw new ValidationException("From makeGame(), cannot make a game with the question size " + limit);
+                throw new ValidationException("From makeGame(), cannot make a game with the question size " + limit + ". Atleast 10 questions and maxium 50");
             }
 
             List<Question> filteredQuestions = questions.stream()

@@ -8,7 +8,7 @@
  COPY target/app.jar /app.jar
 
 # Run the Populator before starting the main application
-RUN java -cp app.jar app.utils.Populator
+# RUN java -cp app.jar app.utils.Populator
 
  # Expose the port your app runs on
  EXPOSE 7070

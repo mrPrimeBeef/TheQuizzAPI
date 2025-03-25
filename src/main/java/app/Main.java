@@ -16,12 +16,12 @@ public class Main {
 
 //      Populator.questionAndUserData(emf);
 
-        PlayerDao playerDao = PlayerDao.getInstance();
+        PlayerDao playerDao = PlayerDao.getInstance(emf);
         GameDao gameDao = GameDao.getInstance();
         GameService gameService = new GameService(gameDao, playerDao);
 
         SecurityController securityController = new SecurityController();
-        GameController gameController = new GameController(gameService);
+        GameController gameController = new GameController(gameService, emf);
 
         Routes routes = new Routes(securityController, gameController);
 

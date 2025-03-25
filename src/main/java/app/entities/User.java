@@ -53,6 +53,6 @@ public class User implements ISecurityUser {
 
     @Override
     public void removeRole(String role) {
-        roles.remove(role);
+        roles.remove(Role.valueOf(role));
     }
 }

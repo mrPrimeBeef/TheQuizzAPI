@@ -5,12 +5,10 @@ import app.controller.ISecurityController;
 import app.controller.SecurityController;
 import app.dtos.GameDTO;
 import app.dtos.QuestionBody;
-import app.entities.Player;
 import app.entities.enums.Role;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.apibuilder.EndpointGroup;
+import io.javalin.http.Context;
 
-import java.util.List;
 import java.util.Map;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -18,7 +16,6 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class Routes {
     private final ISecurityController securityController;
     private final GameController gameController;
-    private final ObjectMapper jsonMapper = new ObjectMapper();
 
     public Routes(SecurityController securityController, GameController gameController) {
         this.gameController = gameController;
@@ -36,10 +33,9 @@ public class Routes {
         return () -> {
             post("/api/game/players/{number}", (ctx) -> {
                 try {
-                    //TODO find ud af gemme dette tal, så det bruges i create players
                     gameController.getNumberOfPlayers(ctx);
                 } catch (Exception e) {
-                    ctx.status(404).json(Map.of("msg", e.getMessage()));
+                    handlePostException(ctx, e);
                 }
             }, Role.ADMIN, Role.USER);
 
@@ -47,7 +43,7 @@ public class Routes {
                 try {
                     gameController.createPlayers(ctx);
                 } catch (Exception e) {
-                    ctx.status(404).json(Map.of("msg", e.getMessage()));
+                    handlePostException(ctx, e);
                 }
             }, Role.ADMIN, Role.USER);
 
@@ -56,7 +52,7 @@ public class Routes {
                     GameDTO gameDTO = gameController.makeGame(ctx);
                     ctx.status(200).json(gameDTO);
                 } catch (Exception e) {
-                    ctx.status(404).json(Map.of("msg", e.getMessage()));
+                    handleGetException(ctx, e);
                 }
             }, Role.ADMIN, Role.USER);
         };
@@ -69,13 +65,33 @@ public class Routes {
                     QuestionBody questionBody = gameController.getOneQuestion();
                     ctx.status(200).json(questionBody);
                 } catch (Exception e) {
-                    ctx.status(404).json(Map.of("msg", e.getMessage()));
+                    handleGetException(ctx, e);
                 }
             }, Role.ANYONE, Role.USER, Role.ADMIN);
 
             get("/healthcheck", securityController::healthCheck, Role.ANYONE);
-            post("/login", securityController::login, Role.ANYONE);
-            post("/register", securityController::register, Role.ANYONE);
+            post("/login", (ctx) -> {
+                try {
+                    securityController.login(ctx);
+                } catch (Exception e) {
+                    handlePostException(ctx, e);
+                }
+            }, Role.ANYONE);
+            post("/register", (ctx) -> {
+                try {
+                    securityController.register(ctx);
+                } catch (Exception e) {
+                    handlePostException(ctx, e);
+                }
+            }, Role.ANYONE);
         };
+    }
+
+    private void handlePostException(Context ctx, Exception e) {
+        ctx.status(400).json(Map.of("status", 400, "msg", "Ugyldig anmodning (f.eks. manglende felt)"));
+    }
+
+    private void handleGetException(Context ctx, Exception e) {
+        ctx.status(404).json(Map.of("status", 404, "msg", "Ressource ikke fundet (spil, spørgsmål osv.)"));
     }
 }

@@ -22,14 +22,18 @@ public abstract class AbstractDao<T, I> {
             em.persist(t);
             em.getTransaction().commit();
             return t;
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new DaoException("Error in create(): " + t.getClass());
         }
     }
 
     public T findById(Object id) {
         try (EntityManager em = emf.createEntityManager()) {
-            return em.find(entityClass, id);
+            T entity = em.find(entityClass, id);
+            if (entity == null) {
+                throw new DaoException("Error in finding " + entityClass + " with id: " + id);
+            }
+            return entity;
         } catch (Exception e) {
             throw new DaoException("Error in finding " + entityClass + " with id: " + id);
         }
@@ -39,7 +43,7 @@ public abstract class AbstractDao<T, I> {
         try (EntityManager em = emf.createEntityManager()) {
             String jpql = "SELECT t FROM " + entityClass.getSimpleName() + " t";
             return em.createQuery(jpql, entityClass).getResultList();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new DaoException("Error in finding all of :" + entityClass);
         }
     }
