@@ -71,7 +71,7 @@ public class Routes {
                 } catch (Exception e) {
                     ctx.status(404).json(Map.of("msg", e.getMessage()));
                 }
-            }, Role.ANYONE);
+            }, Role.ANYONE, Role.USER, Role.ADMIN);
 
             get("/healthcheck", securityController::healthCheck, Role.ANYONE);
             post("/login", securityController::login, Role.ANYONE);
