@@ -55,6 +55,14 @@ public class Routes {
                     handleGetException(ctx, e);
                 }
             }, Role.ADMIN, Role.USER);
+
+            post("/api/game/populate", (ctx) -> {
+                try {
+                    gameController.populateDatabase(ctx);
+                } catch (Exception e) {
+                    handlePostException(ctx, e);
+                }
+            }, Role.ADMIN);
         };
     }
 

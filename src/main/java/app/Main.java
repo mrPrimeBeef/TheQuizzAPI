@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
-//      Populator.questionAndUserData(emf);
+//      Populate.questionAndUserData(emf);
 
         PlayerDao playerDao = PlayerDao.getInstance(emf);
         GameDao gameDao = GameDao.getInstance();

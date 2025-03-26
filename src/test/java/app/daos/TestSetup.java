@@ -4,11 +4,8 @@ import app.config.HibernateConfig;
 import app.entities.Player;
 import app.entities.Question;
 import app.entities.enums.Difficulty;
-import app.entities.enums.Role;
-import app.utils.Populator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;

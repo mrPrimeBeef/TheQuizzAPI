@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.config.HibernateConfig;
 import app.daos.PlayerDao;
 import app.daos.QuestionDao;
 import app.dtos.*;
@@ -8,6 +9,7 @@ import app.entities.Player;
 import app.entities.Question;
 import app.exceptions.ValidationException;
 import app.services.GameService;
+import app.utils.Populate;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -95,5 +97,10 @@ public class GameController {
     public QuestionBody getOneQuestion() {
         Question q = questionDao.findById(1);
         return new QuestionBody(q.getDifficulty().toString(),q.getCategory(),q.getDescription(),q.getRightAnswer(),q.getWrongAnswers());
+    }
+
+    public void populateDatabase(Context ctx) {
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        Populate.questionAndUserData(emf);
     }
 }

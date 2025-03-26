@@ -1,7 +1,6 @@
 package app.utils;
 
 
-import app.config.HibernateConfig;
 import app.daos.QuestionDao;
 import app.daos.SecurityDAO;
 import app.entities.Question;
@@ -12,12 +11,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-public class Populator {
-    public static void main(String[] args) {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        questionAndUserData(emf);
-    }
-
+public class Populate {
     public static void questionAndUserData(EntityManagerFactory emf) {
         addQuestions(emf);
         usersAndRoles(emf);
