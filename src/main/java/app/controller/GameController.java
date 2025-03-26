@@ -17,13 +17,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameController {
-    EntityManagerFactory emf;
     private final GameService gameService;
-    private QuestionDao questionDao = QuestionDao.getInstance(emf);
-    private PlayerDao playerDao = PlayerDao.getInstance(emf);
+    private QuestionDao questionDao;
+    private PlayerDao playerDao;
 
     public GameController(GameService gameService, EntityManagerFactory emf) {
         this.gameService = gameService;
+        this.questionDao = QuestionDao.getInstance(emf);
+        this.playerDao = PlayerDao.getInstance(emf);
     }
 
     public GameDTO makeGame(Context ctx) {

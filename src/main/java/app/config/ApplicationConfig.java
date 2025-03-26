@@ -35,14 +35,14 @@ public class ApplicationConfig {
             config.router.contextPath = "/api";
             config.bundledPlugins.enableRouteOverview("/routes");
             config.bundledPlugins.enableDevLogging();
-             config.showJavalinBanner = false;
+             config.showJavalinBanner = true;
         });
         return applicationConfig;
     }
 
     public ApplicationConfig setRoute(EndpointGroup route) {
         javalinConfig.router.apiBuilder(() -> {
-            path("/", route);
+            path("", route);
         });
         return applicationConfig;
     }

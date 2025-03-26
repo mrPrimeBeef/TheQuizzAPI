@@ -18,7 +18,8 @@ public class Question {
 
     private String description;
     private String rightAnswer;
-    @ElementCollection
+
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> wrongAnswers;
     private String category;
 
