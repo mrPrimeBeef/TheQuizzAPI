@@ -31,7 +31,7 @@ public class Routes {
 
     private EndpointGroup protectedGameRoutes() {
         return () -> {
-            post("/api/game/players/{number}", (ctx) -> {
+            post("/game/players/{number}", (ctx) -> {
                 try {
                     gameController.getNumberOfPlayers(ctx);
                 } catch (Exception e) {
@@ -39,7 +39,7 @@ public class Routes {
                 }
             }, Role.ADMIN, Role.USER);
 
-            post("/api/game/players", (ctx) -> {
+            post("/game/players", (ctx) -> {
                 try {
                     gameController.createPlayers(ctx);
                 } catch (Exception e) {
@@ -56,7 +56,7 @@ public class Routes {
                 }
             }, Role.ADMIN, Role.USER);
 
-            post("/api/game/populate", (ctx) -> {
+            post("/game/populate", (ctx) -> {
                 try {
                     gameController.populateDatabase(ctx);
                 } catch (Exception e) {
