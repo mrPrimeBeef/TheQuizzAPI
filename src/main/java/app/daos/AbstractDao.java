@@ -51,9 +51,9 @@ public abstract class AbstractDao<T, I> {
     public T update(T t) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            em.merge(t);
+            T mergedT = em.merge(t);
             em.getTransaction().commit();
-            return t;
+            return mergedT;
         } catch (Exception e) {
             throw new DaoException("Error in updating :" + t);
         }

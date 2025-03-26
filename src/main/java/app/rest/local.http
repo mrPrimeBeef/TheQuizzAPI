@@ -21,14 +21,10 @@ Content-Type: application/json
     client.global.set("token", response.body.token);
 %}
 
-####
-#POST http://localhost:7070/api
-#Authorization: Bearer {{token}}
-#
-#{
-#    "name": "httptest2",
-#    "address": "sucess street"
-#}
+###
+POST http://localhost:7070/api/game/populate
+Authorization: Bearer {{token}}
+
 ####
 #POST http://localhost:7070/api
 #Authorization: Bearer {{token}}

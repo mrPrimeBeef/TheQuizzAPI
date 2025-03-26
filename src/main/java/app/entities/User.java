@@ -1,9 +1,9 @@
 package app.entities;
 
-import app.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
@@ -15,16 +15,23 @@ import java.util.Set;
 @Table(name = "users")
 @NamedQueries(@NamedQuery(name = "User.deleteAll", query = "DELETE FROM User"))
 public class User implements ISecurityUser {
+
     @Id
+    @Column(unique = true)
     private String username;
     private String password;
 
+    @Setter
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "name")
+    )
+    private Set<Role> roles = new HashSet<>();
+
     @ManyToMany
     private List<Game> games;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -36,7 +43,11 @@ public class User implements ISecurityUser {
 
     @Override
     public Set<String> getRolesAsStrings() {
-        return Set.of();
+        Set<String> roleNames = new HashSet<>();
+        for (Role role : roles) {
+            roleNames.add(role.getName());
+        }
+        return roleNames;
     }
 
     @Override
@@ -46,13 +57,19 @@ public class User implements ISecurityUser {
 
     @Override
     public void addRole(Role role) {
-        if (role != null) {
-            roles.add(role);
-        }
+        roles.add(role);
+        role.users.add(this);
+    }
+
+    public void removeRole(String roleName) {
+        roles.removeIf(role -> role.getName().equals(roleName));
     }
 
     @Override
-    public void removeRole(String role) {
-        roles.remove(Role.valueOf(role));
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

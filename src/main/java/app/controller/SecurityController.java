@@ -65,7 +65,9 @@ public class SecurityController implements ISecurityController {
         ObjectNode returnJson = objectMapper.createObjectNode();
         try {
             UserDTO userInput = ctx.bodyAsClass(UserDTO.class);
-            User createdUserAccount = securityDAO.createUser(userInput.getUsername(), userInput.getPassword());
+            User user = new User(userInput.getUsername(), userInput.getPassword());
+
+            User createdUserAccount = securityDAO.createUser(user);
             String token = createToken(new UserDTO(createdUserAccount.getUsername(), Set.of("USER")));
             returnJson.put("token", token)
                     .put("username", createdUserAccount.getUsername());
@@ -108,7 +110,8 @@ public class SecurityController implements ISecurityController {
 
     private static boolean userHasAllowedRole(UserDTO user, Set<RouteRole> allowedRoles) {
         return user.getRoles().stream()
-                .anyMatch(role -> allowedRoles.contains(role.toUpperCase()));
+                .map(Role::valueOf)
+                .anyMatch(allowedRoles::contains);
     }
 
     private UserDTO getUserFromToken(Context ctx) {

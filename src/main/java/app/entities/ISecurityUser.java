@@ -1,6 +1,6 @@
 package app.entities;
 
-import app.entities.enums.Role;
+import app.entities.Role;
 
 import java.util.Set;
 

@@ -100,8 +100,8 @@ public class GameController {
         return new QuestionBody(q.getDifficulty().toString(),q.getCategory(),q.getDescription(),q.getRightAnswer(),q.getWrongAnswers());
     }
 
-    public void populateDatabase(Context ctx) {
+    public void populateDatabaseWithScienceComputersQuestions(Context ctx) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        Populate.questionAndUserData(emf);
+        Populate.addQuestions(emf);
     }
 }

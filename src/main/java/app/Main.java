@@ -8,6 +8,7 @@ import app.daos.GameDao;
 import app.daos.PlayerDao;
 import app.rest.Routes;
 import app.services.GameService;
+import app.utils.Populate;
 import jakarta.persistence.EntityManagerFactory;
 
 public class Main {
@@ -15,6 +16,7 @@ public class Main {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
 //      Populate.questionAndUserData(emf);
+        Populate.usersAndRoles(emf);
 
         PlayerDao playerDao = PlayerDao.getInstance(emf);
         GameDao gameDao = GameDao.getInstance();

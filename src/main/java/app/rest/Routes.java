@@ -58,7 +58,8 @@ public class Routes {
 
             post("/populate", (ctx) -> {
                 try {
-                    gameController.populateDatabase(ctx);
+                    gameController.populateDatabaseWithScienceComputersQuestions(ctx);
+                    ctx.status(200);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
@@ -75,7 +76,7 @@ public class Routes {
                 } catch (Exception e) {
                     handleGetException(ctx, e);
                 }
-            }, Role.ANYONE, Role.USER, Role.ADMIN);
+            }, Role.ANYONE);
 
             get("/healthcheck", securityController::healthCheck, Role.ANYONE);
             post("/login", (ctx) -> {
