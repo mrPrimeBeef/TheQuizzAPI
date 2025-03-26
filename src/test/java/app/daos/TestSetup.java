@@ -39,11 +39,11 @@ public class TestSetup {
             e.printStackTrace();
         }
     }
-    @AfterAll
-    static void tearDown() {
-        if (emf != null && emf.isOpen()) {
-            emf.close();
-            System.out.println("EntityManagerFactory closed.");
-        }
-    }
+//    @AfterAll
+//    static void tearDown() {
+//        if (emf != null && emf.isOpen()) {
+//            emf.close();
+//            System.out.println("EntityManagerFactory closed.");
+//        }
+//    }
 }
