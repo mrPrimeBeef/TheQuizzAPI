@@ -16,7 +16,7 @@ public class Main {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
 
 //      Populate.questionAndUserData(emf);
-        Populate.usersAndRoles(emf);
+//        Populate.usersAndRoles(emf);
 
         PlayerDao playerDao = PlayerDao.getInstance(emf);
         GameDao gameDao = GameDao.getInstance();

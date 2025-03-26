@@ -13,6 +13,9 @@ import java.util.List;
 
 public class Populate {
     public static void questionAndUserData(EntityManagerFactory emf) {
+        SecurityDAO securityDAO = SecurityDAO.getInstance(emf);
+
+        securityDAO.createRolesInDataBase();
         addQuestions(emf);
         usersAndRoles(emf);
     }

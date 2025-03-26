@@ -3,6 +3,7 @@ package app.controller;
 import app.config.HibernateConfig;
 import app.daos.PlayerDao;
 import app.daos.QuestionDao;
+import app.daos.SecurityDAO;
 import app.dtos.*;
 import app.entities.Game;
 import app.entities.Player;
@@ -20,11 +21,14 @@ public class GameController {
     private final GameService gameService;
     private QuestionDao questionDao;
     private PlayerDao playerDao;
+    private SecurityDAO securityDAO;
 
     public GameController(GameService gameService, EntityManagerFactory emf) {
         this.gameService = gameService;
         this.questionDao = QuestionDao.getInstance(emf);
         this.playerDao = PlayerDao.getInstance(emf);
+        this.securityDAO = SecurityDAO.getInstance(emf);
+
     }
 
     public GameDTO makeGame(Context ctx) {
@@ -103,5 +107,9 @@ public class GameController {
     public void populateDatabaseWithScienceComputersQuestions(Context ctx) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         Populate.addQuestions(emf);
+    }
+
+    public void populateDatabaseRoles(Context ctx) {
+        securityDAO.createRolesInDataBase();
     }
 }
