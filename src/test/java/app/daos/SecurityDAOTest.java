@@ -76,7 +76,7 @@ class SecurityDAOTest {
         DaoException exception = assertThrows(DaoException.class,
                 () -> securityDAO.getVerifiedUser(nonExistentUsername, password));
 
-        assertTrue(exception.getMessage().contains("Error reading object from db"));
+        assertTrue(exception.getMessage().contains("Error in finding class app.entities.User with id: nonexistentuser"));
     }
 
     @Test
@@ -147,7 +147,7 @@ class SecurityDAOTest {
         DaoException exception = assertThrows(DaoException.class,
                 () -> securityDAO.addRoleToUser(nonExistentUsername, Role.USER));
 
-        assertTrue(exception.getMessage().contains("Error reading object from db"));
+        assertTrue(exception.getMessage().contains("Error in finding class app.entities.User with id: nonexistentuser"));
     }
 
 
@@ -187,6 +187,6 @@ class SecurityDAOTest {
         DaoException exception = assertThrows(DaoException.class,
                 () -> securityDAO.removeRoleFromUser(nonExistentUsername, Role.USER));
 
-        assertTrue(exception.getMessage().contains("Error reading object from db"));
+        assertTrue(exception.getMessage().contains("Error in finding class app.entities.User with id: nonexistentuser"));
     }
 }
