@@ -21,16 +21,22 @@ public class Populate {
     }
 
     public static void usersAndRoles(SecurityDAO securityDAO) {
+
+
         RoleDao roleDao = securityDAO.getRoleDao();
 
-        Role userRole = roleDao.findById("USER");
-        if (userRole == null) {
+        Role userRole;
+        try {
+            userRole = roleDao.findById("USER");
+        } catch (Exception e) {
             userRole = new Role("USER");
             roleDao.create(userRole);
         }
 
-        Role adminRole = roleDao.findById("ADMIN");
-        if (adminRole == null) {
+        Role adminRole;
+        try {
+            adminRole = roleDao.findById("ADMIN");
+        } catch (Exception e){
             adminRole = new Role("ADMIN");
             roleDao.create(adminRole);
         }
