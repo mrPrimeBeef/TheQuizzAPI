@@ -50,7 +50,7 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
         }
     }
 
-    public User createWithRole(User user) throws ValidationException {
+//    public User createWithRole(User user) throws ValidationException {
 //        if (user.getRoles() == null || user.getRoles().isEmpty()) {
 //            Role userRole = roleDao.findById("USER");
 //            if (userRole == null) {
@@ -59,16 +59,16 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
 //            }
 //            user.addRole(userRole);
 //        }
-
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            User managedUser = em.merge(user);
-            em.getTransaction().commit();
-            return managedUser;
-        } catch (Exception e) {
-            throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
-        }
-    }
+//
+//        try (EntityManager em = emf.createEntityManager()) {
+//            em.getTransaction().begin();
+//            User managedUser = em.merge(user);
+//            em.getTransaction().commit();
+//            return managedUser;
+//        } catch (Exception e) {
+//            throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
+//        }
+//    }
 
     @Override
     public UserDTO getVerifiedUser(String username, String password) throws ValidationException, DaoException {
@@ -94,13 +94,13 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
                 throw new EntityExistsException("User with username " + user.getUsername() + " already exists");
             }
 
-            Set<Role> userRoles = user.getRoles();
-            if (userRoles == null || userRoles.isEmpty()) {
-                Role role = new Role("USER");
-                user.addRole(role);
-            }
+//            Set<Role> userRoles = user.getRoles();
+//            if (userRoles == null || userRoles.isEmpty()) {
+//                Role role = new Role("USER");
+//                user.addRole(role);
+//            }
             try {
-                User createdUser = instance.createWithRole(user);
+                User createdUser = instance.create(user);
                 logger.info("User created (username {})", user.getUsername());
                 return createdUser;
             } catch (Exception e) {
