@@ -1,6 +1,7 @@
 package app.utils;
 
 import app.daos.QuestionDao;
+import app.daos.RoleDao;
 import app.daos.SecurityDAO;
 import app.entities.Question;
 import app.entities.User;
@@ -21,12 +22,22 @@ public class Populate {
 
     public static void usersAndRoles(EntityManagerFactory emf) {
         SecurityDAO securityDAO = SecurityDAO.getInstance(emf);
+        RoleDao roleDAO = RoleDao.getInstance(emf);
+
+        Role userRole = roleDAO.findById("USER");
+        if (userRole == null) {
+            userRole = new Role("USER");
+            roleDAO.create(userRole);
+        }
+
+        Role adminRole = roleDAO.findById("ADMIN");
+        if (adminRole == null) {
+            adminRole = new Role("ADMIN");
+            roleDAO.create(adminRole);
+        }
 
         User user1 = new User("Villager", "1234");
         User user2 = new User("PineBoxJim", "4321");
-
-        Role userRole = new Role("USER");
-        Role adminRole = new Role("ADMIN");
 
         user1.addRole(userRole);
         user2.addRole(adminRole);

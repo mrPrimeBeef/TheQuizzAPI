@@ -12,11 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 with Maven caching
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'corretto'
+          cache: 'maven' # Aktiver caching af Maven dependencies
 
       - name: Build with Maven
         run: mvn --batch-mode clean package
