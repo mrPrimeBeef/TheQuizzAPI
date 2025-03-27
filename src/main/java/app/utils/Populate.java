@@ -12,28 +12,27 @@ import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 
 public class Populate {
-    public static void questionAndUserData(EntityManagerFactory emf) {
-        SecurityDAO securityDAO = SecurityDAO.getInstance(emf);
+    public static void questionAndUserData(EntityManagerFactory emf, RoleDao roleDao) {
+        SecurityDAO securityDAO = SecurityDAO.getInstance(emf, roleDao);
 
         securityDAO.createRolesInDataBase();
         addQuestions(emf);
-        usersAndRoles(emf);
+        usersAndRoles(securityDAO);
     }
 
-    public static void usersAndRoles(EntityManagerFactory emf) {
-        SecurityDAO securityDAO = SecurityDAO.getInstance(emf);
-        RoleDao roleDAO = RoleDao.getInstance(emf);
+    public static void usersAndRoles(SecurityDAO securityDAO) {
+        RoleDao roleDao = securityDAO.getRoleDao();
 
-        Role userRole = roleDAO.findById("USER");
+        Role userRole = roleDao.findById("USER");
         if (userRole == null) {
             userRole = new Role("USER");
-            roleDAO.create(userRole);
+            roleDao.create(userRole);
         }
 
-        Role adminRole = roleDAO.findById("ADMIN");
+        Role adminRole = roleDao.findById("ADMIN");
         if (adminRole == null) {
             adminRole = new Role("ADMIN");
-            roleDAO.create(adminRole);
+            roleDao.create(adminRole);
         }
 
         User user1 = new User("Villager", "1234");

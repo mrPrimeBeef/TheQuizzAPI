@@ -3,6 +3,7 @@ package app.controller;
 import app.config.HibernateConfig;
 import app.daos.PlayerDao;
 import app.daos.QuestionDao;
+import app.daos.RoleDao;
 import app.daos.SecurityDAO;
 import app.dtos.*;
 import app.entities.Game;
@@ -21,13 +22,15 @@ public class GameController {
     private final GameService gameService;
     private QuestionDao questionDao;
     private PlayerDao playerDao;
+    private RoleDao roleDao;
     private SecurityDAO securityDAO;
 
     public GameController(GameService gameService, EntityManagerFactory emf) {
         this.gameService = gameService;
         this.questionDao = QuestionDao.getInstance(emf);
         this.playerDao = PlayerDao.getInstance(emf);
-        this.securityDAO = SecurityDAO.getInstance(emf);
+        this.roleDao = RoleDao.getInstance(emf);
+        this.securityDAO = SecurityDAO.getInstance(emf, roleDao);
 
     }
 

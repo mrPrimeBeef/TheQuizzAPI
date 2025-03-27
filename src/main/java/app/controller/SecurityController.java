@@ -2,6 +2,7 @@ package app.controller;
 
 import app.config.HibernateConfig;
 import app.daos.ISecurityDAO;
+import app.daos.RoleDao;
 import app.daos.SecurityDAO;
 import app.entities.User;
 import app.entities.enums.Role;
@@ -31,16 +32,15 @@ import java.util.Set;
 public class SecurityController implements ISecurityController {
     private final ITokenSecurity tokenSecurity = new TokenSecurity();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final ISecurityDAO securityDAO;
+    private ISecurityDAO securityDAO;
 
     private final Logger logger = LoggerFactory.getLogger(SecurityController.class);
 
-    public SecurityController(EntityManagerFactory emf) {
-        this.securityDAO = SecurityDAO.getInstance(emf);
+    public SecurityController(EntityManagerFactory emf, RoleDao roleDao) {
+        this.securityDAO = SecurityDAO.getInstance(emf, roleDao);
     }
-    public SecurityController()
-    {
-        this.securityDAO = SecurityDAO.getInstance(HibernateConfig.getEntityManagerFactory());
+
+    public SecurityController() {
     }
 
     @Override

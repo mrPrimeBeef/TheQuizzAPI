@@ -5,7 +5,6 @@ import app.entities.Role;
 import jakarta.persistence.EntityManagerFactory;
 
 public class RoleDao extends AbstractDao<Role, Integer> {
-    private static EntityManagerFactory emf;
     private static RoleDao instance;
 
     private RoleDao(EntityManagerFactory emf) {

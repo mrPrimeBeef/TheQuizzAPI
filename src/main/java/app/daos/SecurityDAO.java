@@ -11,22 +11,22 @@ import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurityDAO {
     private static SecurityDAO instance;
-    private static RoleDao roleDao = RoleDao.getInstance();
+    private static RoleDao roleDao;
     private final Logger logger = LoggerFactory.getLogger(SecurityDAO.class);
 
     private SecurityDAO(EntityManagerFactory emf) {
         super(User.class, emf);
     }
 
-    public static SecurityDAO getInstance(EntityManagerFactory emf) {
+    public static SecurityDAO getInstance(EntityManagerFactory emf, RoleDao roleDao1) {
         if (instance == null) {
             instance = new SecurityDAO(emf);
+            roleDao = roleDao1;
         }
         return instance;
     }
@@ -139,10 +139,7 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
             throw new DaoException("Error removing role from user", e);
         }
     }
-
-    private Role findRoleByName(String roleName) {
-        // Implement method to find Role by name
-        // This is a placeholder implementation
-        return new Role(roleName);
+    public RoleDao getRoleDao() {
+        return roleDao;
     }
 }
