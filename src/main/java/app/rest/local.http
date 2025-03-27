@@ -23,7 +23,7 @@ Content-Type: application/json
 
 ###
 POST http://localhost:7070/api/game/populate
-Authorization: Bearer {{token}}
+#Authorization: Bearer {{token}}
 
 ####
 #POST http://localhost:7070/api

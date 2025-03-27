@@ -64,7 +64,7 @@ public class Routes {
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
-            }, Role.ADMIN);
+            }, Role.ANYONE);
         };
     }
 

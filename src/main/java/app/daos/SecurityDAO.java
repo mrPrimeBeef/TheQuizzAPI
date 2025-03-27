@@ -31,7 +31,7 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
         return instance;
     }
 
-    public void createRolesInDataBase() {
+    public void createRolesInDataBaseAndAdmin() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Role userRole = new Role("USER");
@@ -39,6 +39,10 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
 
             em.persist(userRole);
             em.persist(adminRole);
+
+            User user2 = new User("PineBoxJim", "4321");
+            user2.addRole(adminRole);
+            em.persist(user2);
 
             em.getTransaction().commit();
         } catch (Exception e) {

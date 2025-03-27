@@ -113,6 +113,6 @@ public class GameController {
     }
 
     public void populateDatabaseRoles(Context ctx) {
-        securityDAO.createRolesInDataBase();
+        securityDAO.createRolesInDataBaseAndAdmin();
     }
 }

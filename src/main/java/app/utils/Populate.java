@@ -15,7 +15,7 @@ public class Populate {
     public static void questionAndUserData(EntityManagerFactory emf, RoleDao roleDao) {
         SecurityDAO securityDAO = SecurityDAO.getInstance(emf, roleDao);
 
-        securityDAO.createRolesInDataBase();
+        securityDAO.createRolesInDataBaseAndAdmin();
         addQuestions(emf);
         usersAndRoles(securityDAO);
     }
