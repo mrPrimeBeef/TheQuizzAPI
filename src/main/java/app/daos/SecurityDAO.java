@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurityDAO {
-    private static SecurityDAO instance;
+public class SecurityDAO extends AbstractDao<User, Integer> //implements ISecurityDAO {
+{ private static SecurityDAO instance;
     private static RoleDao roleDao;
     private final Logger logger = LoggerFactory.getLogger(SecurityDAO.class);
 
@@ -50,27 +50,27 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
         }
     }
 
-    public User createWithRole(User user) throws ValidationException {
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            Role userRole = roleDao.findById("USER");
-            if (userRole == null) {
-                userRole = new Role("USER");
-                roleDao.create(userRole);
-            }
-            user.addRole(userRole);
-        }
+//    public User createWithRole(User user) throws ValidationException {
+//        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+//            Role userRole = roleDao.findById("USER");
+//            if (userRole == null) {
+//                userRole = new Role("USER");
+//                roleDao.create(userRole);
+//            }
+//            user.addRole(userRole);
+//        }
+//
+//        try (EntityManager em = emf.createEntityManager()) {
+//            em.getTransaction().begin();
+//            User managedUser = em.merge(user);
+//            em.getTransaction().commit();
+//            return managedUser;
+//        } catch (Exception e) {
+//            throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
+//        }
+//    }
 
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            User managedUser = em.merge(user);
-            em.getTransaction().commit();
-            return managedUser;
-        } catch (Exception e) {
-            throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
-        }
-    }
-
-    @Override
+    //@Override
     public UserDTO getVerifiedUser(String username, String password) throws ValidationException, DaoException {
         User user = findById(username);
         if (user == null) {
@@ -86,31 +86,31 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
                 .collect(Collectors.toSet()));
     }
 
-    @Override
-    public User createUser(User user) {
-        try (EntityManager em = emf.createEntityManager()) {
-            User existingUser = em.find(User.class, user.getUsername());
-            if (existingUser != null) {
-                throw new EntityExistsException("User with username " + user.getUsername() + " already exists");
-            }
+//    @Override
+//    public User createUser(User user) {
+//        try (EntityManager em = emf.createEntityManager()) {
+//            User existingUser = em.find(User.class, user.getUsername());
+//            if (existingUser != null) {
+//                throw new EntityExistsException("User with username " + user.getUsername() + " already exists");
+//            }
+//
+//            Set<Role> userRoles = user.getRoles();
+//            if (userRoles == null || userRoles.isEmpty()) {
+//                Role role = new Role("USER");
+//                user.addRole(role);
+//            }
+//            try {
+//                User createdUser = instance.createWithRole(user);
+//                logger.info("User created (username {})", user.getUsername());
+//                return createdUser;
+//            } catch (Exception e) {
+//                logger.error("Error creating user", e);
+//                throw new EntityExistsException("Error creating user", e);
+//            }
+//        }
+//    }
 
-            Set<Role> userRoles = user.getRoles();
-            if (userRoles == null || userRoles.isEmpty()) {
-                Role role = new Role("USER");
-                user.addRole(role);
-            }
-            try {
-                User createdUser = instance.createWithRole(user);
-                logger.info("User created (username {})", user.getUsername());
-                return createdUser;
-            } catch (Exception e) {
-                logger.error("Error creating user", e);
-                throw new EntityExistsException("Error creating user", e);
-            }
-        }
-    }
-
-    @Override
+   // @Override
     public User addRoleToUser(String username, Role role) throws DaoException {
         User foundUser = findById(username);
         if (foundUser == null) {
@@ -127,7 +127,7 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
         }
     }
 
-    @Override
+   // @Override
     public User removeRoleFromUser(String username, Role role) {
         User foundUser = findById(username);
         if (foundUser == null) {
