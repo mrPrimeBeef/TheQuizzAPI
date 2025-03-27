@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SecurityDAOTest {
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
-    private static final SecurityDAO securityDAO = SecurityDAO.getInstance(emf);
+    private static final RoleDao roleDao = RoleDao.getInstance(emf);
+    private static final SecurityDAO securityDAO = SecurityDAO.getInstance(emf, roleDao);
     private User testUserAccount;
 
     Role adminRole = new Role("ADMIN");
