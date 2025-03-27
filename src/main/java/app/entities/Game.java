@@ -20,7 +20,7 @@ public class Game {
     @ManyToMany (mappedBy = "games")
     private List<User> users;
 
-    @OneToMany
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;
 
     private Integer numberOfPlayers;
@@ -39,6 +39,11 @@ public class Game {
     public Game(List<Player> players, List<Question> questions, Integer numberOfPlayers) {
         this.players = players;
         this.questions = questions;
+        this.numberOfPlayers = numberOfPlayers;
 //        this.gameMode = gameMode;
+    }
+
+    public void addPlayer(Player player){
+        player.setGame(this);
     }
 }

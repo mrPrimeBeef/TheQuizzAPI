@@ -5,10 +5,13 @@ import app.controller.ISecurityController;
 import app.controller.SecurityController;
 import app.dtos.GameDTO;
 import app.dtos.QuestionBody;
+import app.entities.Game;
+import app.entities.Player;
 import app.entities.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 
+import java.util.List;
 import java.util.Map;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -26,28 +29,29 @@ public class Routes {
         return () -> {
             path("game", protectedGameRoutes());
             path("auth", authRoutes());
+            path("populate", populateRoutes());
         };
     }
 
     private EndpointGroup protectedGameRoutes() {
         return () -> {
-            post("/players/{number}", (ctx) -> {
+            post("/{number}", (ctx) -> {
                 try {
-                    gameController.getNumberOfPlayers(ctx);
+                    Integer gameId = gameController.getNumberOfPlayers(ctx);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
             }, Role.ADMIN, Role.USER);
 
-            post("/players", (ctx) -> {
+            post("/{gameid}/players/names", (ctx) -> {
                 try {
-                    gameController.createPlayers(ctx);
+                    List<Player> players = gameController.createPlayers(ctx);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
             }, Role.ADMIN, Role.USER);
 
-            get("/questions?limit={number}&category={category}&difficulty={difficulty}", (ctx) -> {
+            get("/{gameid}/questions?limit={number}&category={category}&difficulty={difficulty}", (ctx) -> {
                 try {
                     GameDTO gameDTO = gameController.makeGame(ctx);
                     ctx.status(200).json(gameDTO);
@@ -56,18 +60,6 @@ public class Routes {
                 }
             }, Role.ADMIN, Role.USER);
 
-            get("/populate", (ctx) -> {
-                try {
-                    try{
-                        gameController.populateDatabaseRoles(ctx);
-                    } catch (Exception e){
-                        gameController.populateDatabaseWithScienceComputersQuestions(ctx);
-                    }
-                    ctx.status(200);
-                } catch (Exception e) {
-                    handlePostException(ctx, e);
-                }
-            }, Role.ANYONE);
         };
     }
 
@@ -97,6 +89,23 @@ public class Routes {
                     handlePostException(ctx, e);
                 }
             }, Role.ANYONE);
+        };
+    }
+
+    private EndpointGroup populateRoutes() {
+        return () -> {
+            get("/populate", (ctx) -> {
+                try {
+                    try {
+                        gameController.populateDatabaseRoles(ctx);
+                    } catch (Exception e) {
+                        gameController.populateDatabaseWithScienceComputersQuestions(ctx);
+                    }
+                    ctx.status(200);
+                } catch (Exception e) {
+                    handlePostException(ctx, e);
+                }
+            }, Role.ADMIN);
         };
     }
 

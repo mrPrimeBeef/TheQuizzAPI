@@ -18,26 +18,29 @@ public class GameService {
         this.playerDao = playerDao;
     }
 
-    public Game createGame(List<Player> players, List<Question> questions, Integer nummberOfPlayers) {
-        Game game = new Game();
-        game.setPlayers(players);
-        game.setQuestions(questions);
-        game.setNumberOfPlayers(nummberOfPlayers);
-        return gameDao.create(game);
+    public Game createGame(List<Player> players, List<Question> questions, Game activeGame) {
+        activeGame.setPlayers(players);
+        activeGame.setQuestions(questions);
+
+        return gameDao.update(activeGame);
     }
 
-    public List<Player> createPlayers(List<PlayerNameAndPoints> playerNamesAndPoints) {
+    public List<Player> createPlayers(List<PlayerNameAndPoints> playerNamesAndPoints, Integer gameId) {
         return playerNamesAndPoints.stream()
                 .map(playerNameAndPoints -> {
                     Player player = new Player();
                     player.setName(playerNameAndPoints.name());
                     player.setPoints(playerNameAndPoints.points());
+                    player.setGame(gameDao.findById(gameId));
                     return playerDao.create(player);
                 })
                 .toList();
     }
 
-    public void createNumberOfPlayers(int i) {
-//        gameDao.create();
+    public Integer createNumberOfPlayers(int numberOfPlayers) {
+        Game game = new Game();
+        game.setNumberOfPlayers(numberOfPlayers);
+        gameDao.create(game);
+        return game.getId();
     }
 }

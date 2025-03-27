@@ -1,10 +1,7 @@
 package app.controller;
 
 import app.config.HibernateConfig;
-import app.daos.PlayerDao;
-import app.daos.QuestionDao;
-import app.daos.RoleDao;
-import app.daos.SecurityDAO;
+import app.daos.*;
 import app.dtos.*;
 import app.entities.Game;
 import app.entities.Player;
@@ -23,6 +20,7 @@ public class GameController {
     private QuestionDao questionDao;
     private PlayerDao playerDao;
     private RoleDao roleDao;
+    private GameDao gameDao;
     private SecurityDAO securityDAO;
     private EntityManagerFactory emf;
 
@@ -31,6 +29,7 @@ public class GameController {
         this.questionDao = QuestionDao.getInstance(emf);
         this.playerDao = PlayerDao.getInstance(emf);
         this.roleDao = RoleDao.getInstance(emf);
+        this.gameDao = GameDao.getInstance(emf);
         this.securityDAO = SecurityDAO.getInstance(emf, roleDao);
 
     }
@@ -72,8 +71,11 @@ public class GameController {
 
             List<Player> players = playerDao.findAll();
 
-//            Game game = gameService.createGame(players, filteredQuestions);
+            Game activeGame = gameDao.findById(ctx.queryParam("gameid"));
 
+            gameService.createGame(players, filteredQuestions, activeGame);
+
+            // this is to send DTO of the game
             List<PlayerNameAndPoints> playerNameAndPointsList = players.stream()
                     .map(player -> new PlayerNameAndPoints(player.getName(), player.getPoints()))
                     .toList();
@@ -81,31 +83,32 @@ public class GameController {
             PlayerNamesDTO playerNamesDTO = new PlayerNamesDTO(playerNameAndPointsList);
 
             List<QuestionBody> questionBodyList = filteredQuestions.stream()
-                    .map(q -> new QuestionBody(q.getDifficulty().toString(),q.getCategory(), q.getDescription(),q.getRightAnswer(),q.getWrongAnswers()))
+                    .map(q -> new QuestionBody(q.getDifficulty().toString(), q.getCategory(), q.getDescription(), q.getRightAnswer(), q.getWrongAnswers()))
                     .toList();
             QuestionDTO questionDTO = new QuestionDTO(questionBodyList);
 
-            return new GameDTO(playerNamesDTO,questionDTO);
-
+            return new GameDTO(playerNamesDTO, questionDTO);
         } catch (Exception e) {
 
         }
         return null;
     }
 
-    public void getNumberOfPlayers(Context ctx) {
+    public Integer getNumberOfPlayers(Context ctx) {
         String numberOfPlayers = ctx.pathParam("number");
-        gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers));
+        return gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers));
     }
 
     public List<Player> createPlayers(Context ctx) {
         PlayerNamesDTO playerNamesDTO = ctx.bodyAsClass(PlayerNamesDTO.class);
-        return gameService.createPlayers(playerNamesDTO.players());
+        String gameidStr = ctx.pathParam("gameid");
+        Integer gameid = Integer.parseInt(gameidStr);
+        return gameService.createPlayers(playerNamesDTO.players(), gameid);
     }
 
     public QuestionBody getOneQuestion() {
         Question q = questionDao.findById(1);
-        return new QuestionBody(q.getDifficulty().toString(),q.getCategory(),q.getDescription(),q.getRightAnswer(),q.getWrongAnswers());
+        return new QuestionBody(q.getDifficulty().toString(), q.getCategory(), q.getDescription(), q.getRightAnswer(), q.getWrongAnswers());
     }
 
     public void populateDatabaseWithScienceComputersQuestions(Context ctx) {
