@@ -22,6 +22,7 @@ public class GameService {
         Game game = new Game();
         game.setPlayers(players);
         game.setQuestions(questions);
+//        game.s
         return gameDao.create(game);
     }
 

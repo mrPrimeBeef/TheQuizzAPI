@@ -23,6 +23,8 @@ public class Game {
     @OneToMany
     private List<Player> players;
 
+    private Integer numberOfPlayers;
+
     @ManyToMany
     @JoinTable(
             name = "game_question",
@@ -34,7 +36,7 @@ public class Game {
 //    @Enumerated(EnumType.STRING)
 //    private GameMode gameMode;
 
-    public Game(List<Player> players, List<Question> questions) {
+    public Game(List<Player> players, List<Question> questions, Integer numberOfPlayers) {
         this.players = players;
         this.questions = questions;
 //        this.gameMode = gameMode;
