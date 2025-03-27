@@ -47,25 +47,22 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
     }
 
     public User createWithRole(User user) throws ValidationException {
-        List<Role> rolesInDatabase = roleDao.findAll();
-
-        boolean userGotRole = user.getRoles().stream()
-                .anyMatch(userRole ->
-                        rolesInDatabase.stream()
-                                .anyMatch(dbRole -> dbRole.getName().equals(userRole.getName()))
-                );
-
-        if (userGotRole) {
-            try (EntityManager em = emf.createEntityManager()) {
-                em.getTransaction().begin();
-                User managedUser = em.merge(user);
-                em.getTransaction().commit();
-                return managedUser;
-            } catch (Exception e) {
-                throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            Role userRole = roleDao.findById("USER");
+            if (userRole == null) {
+                userRole = new Role("USER");
+                roleDao.create(userRole);
             }
-        } else {
-            throw new ValidationException("Cannot create user without a valid role");
+            user.addRole(userRole);
+        }
+
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            User managedUser = em.merge(user);
+            em.getTransaction().commit();
+            return managedUser;
+        } catch (Exception e) {
+            throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
         }
     }
 

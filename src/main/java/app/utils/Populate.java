@@ -1,6 +1,5 @@
 package app.utils;
 
-
 import app.daos.QuestionDao;
 import app.daos.SecurityDAO;
 import app.entities.Question;
