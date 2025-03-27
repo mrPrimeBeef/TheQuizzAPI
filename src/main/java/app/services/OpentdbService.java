@@ -33,23 +33,43 @@ public class OpentdbService {
 
         String url = "https://opentdb.com/api.php?amount=50&category=18&token=" + token;
 
-        try {
-            for (int i = 0; i < 4; i++) {
-                String json = ApiReader.getDataFromUrl(url);
-                if (json == null) {
-                    throw new ApiException("Failed to fetch data from API");
+        boolean hasMoreQuestions = true; // Flag til at tjekke, om der stadig er spørgsmål
+
+        while (hasMoreQuestions) {
+            for (int i = 0; i < 4; i++) { // Op til 4 forsøg per batch
+                try {
+                    String json = ApiReader.getDataFromUrl(url);
+                    if (json != null) {
+                        QuestionResponseDTO response = objectMapper.readValue(json, QuestionResponseDTO.class);
+
+                        // Stop hvis API'et ikke returnerer flere spørgsmål
+                        if (response.results().isEmpty()) {
+                            System.out.println("Ingen flere spørgsmål fundet. Stopper...");
+                            hasMoreQuestions = false;
+                            break;
+                        }
+
+                        // Tilføj de hentede spørgsmål til listen
+                        for (QuestionResponseBody b : response.results()) {
+                            Difficulty difficulty = Difficulty.valueOf(b.difficulty().toUpperCase());
+                            questionsList.add(new Question(b.question(), b.correct_answer(), b.incorrect_answers(), b.category(), difficulty));
+                        }
+
+                        break; // Succesfuldt API-kald, stop retry-løkken
+                    }
+                } catch (Exception e) {
+                    if (i == 3) { // Hvis det er sidste forsøg, kast en fejl
+                        throw new ApiException("Fejl ved API-kald efter flere forsøg", e);
+                    }
                 }
 
-                QuestionResponseDTO response = objectMapper.readValue(json, QuestionResponseDTO.class);
-                for (QuestionResponseBody b : response.results()) {
-                    Difficulty difficulty = Difficulty.valueOf(b.difficulty().toUpperCase());
-                    questionsList.add(new Question(b.question(), b.correct_answer(), b.incorrect_answers(), b.category(), difficulty));
+                // Vent 5 sekunder før næste forsøg
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-                Thread.sleep(5000);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException("There is an error in getting the API in getComputerSienceQuestions()");
         }
         return questionsList;
     }

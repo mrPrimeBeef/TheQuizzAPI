@@ -58,8 +58,11 @@ public class Routes {
 
             get("/populate", (ctx) -> {
                 try {
-                    gameController.populateDatabaseRoles(ctx);
-                    gameController.populateDatabaseWithScienceComputersQuestions(ctx);
+                    try{
+                        gameController.populateDatabaseRoles(ctx);
+                    } catch (Exception e){
+                        gameController.populateDatabaseWithScienceComputersQuestions(ctx);
+                    }
                     ctx.status(200);
                 } catch (Exception e) {
                     handlePostException(ctx, e);

@@ -21,8 +21,6 @@ public class Populate {
     }
 
     public static void usersAndRoles(SecurityDAO securityDAO) {
-
-
         RoleDao roleDao = securityDAO.getRoleDao();
 
         Role userRole;
@@ -36,7 +34,7 @@ public class Populate {
         Role adminRole;
         try {
             adminRole = roleDao.findById("ADMIN");
-        } catch (Exception e){
+        } catch (Exception e) {
             adminRole = new Role("ADMIN");
             roleDao.create(adminRole);
         }
