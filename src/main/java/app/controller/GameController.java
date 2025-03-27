@@ -24,6 +24,7 @@ public class GameController {
     private PlayerDao playerDao;
     private RoleDao roleDao;
     private SecurityDAO securityDAO;
+    private EntityManagerFactory emf;
 
     public GameController(GameService gameService, EntityManagerFactory emf) {
         this.gameService = gameService;
@@ -108,11 +109,10 @@ public class GameController {
     }
 
     public void populateDatabaseWithScienceComputersQuestions(Context ctx) {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         Populate.addQuestions(emf);
     }
 
     public void populateDatabaseRoles(Context ctx) {
-        securityDAO.createRolesInDataBaseAndAdmin();
+        Populate.usersAndRoles(securityDAO);
     }
 }

@@ -50,7 +50,7 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
         }
     }
 
-    public User createWithRole(User user) throws ValidationException {
+    public User createWithRole(User user) {
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
             Role userRole = roleDao.findById("USER");
             if (userRole == null) {
@@ -59,7 +59,6 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
             }
             user.addRole(userRole);
         }
-
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             User managedUser = em.merge(user);
@@ -94,7 +93,7 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
                 throw new EntityExistsException("User with username " + user.getUsername() + " already exists");
             }
             try {
-                User createdUser = instance.create(user);
+                User createdUser = instance.createWithRole(user);
                 logger.info("User created (username {})", user.getUsername());
                 return createdUser;
             } catch (Exception e) {

@@ -29,9 +29,13 @@ public abstract class AbstractDao<T, I> {
 
     public T findById(Object id) {
         try (EntityManager em = emf.createEntityManager()) {
-            return em.find(entityClass, id);
+            T entity = em.find(entityClass, id);
+            if (entity == null) {
+                throw new DaoException("Error in finding " + entityClass + " with id: " + id);
+            }
+            return entity;
         } catch (Exception e) {
-            throw new DaoException("Error in finding " + entityClass + " with id: " + id, e);
+            throw new DaoException("Error in finding " + entityClass + " with id: " + id);
         }
     }
 

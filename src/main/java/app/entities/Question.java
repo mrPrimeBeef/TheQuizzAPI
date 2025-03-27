@@ -4,6 +4,7 @@ import app.entities.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import java.util.List;
@@ -16,11 +17,16 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Setter
     private String description;
+
+    @Setter
     private String rightAnswer;
 
+    @Setter
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> wrongAnswers;
+
     private String category;
 
     @Enumerated(EnumType.STRING)
