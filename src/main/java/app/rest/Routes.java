@@ -56,7 +56,7 @@ public class Routes {
                 }
             }, Role.ADMIN, Role.USER);
 
-            post("/populate", (ctx) -> {
+            get("/populate", (ctx) -> {
                 try {
                     gameController.populateDatabaseRoles(ctx);
                     gameController.populateDatabaseWithScienceComputersQuestions(ctx);

@@ -20,3 +20,5 @@ Content-Type: application/json
 > {%
     client.global.set("token", response.body.token);
 %}
+###
+POST https://thequizzapi.sem2.dk/api/game/populate

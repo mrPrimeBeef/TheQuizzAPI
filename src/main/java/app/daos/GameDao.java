@@ -18,4 +18,6 @@ public class GameDao extends AbstractDao<Game, Integer>{
         }
         return instance;
     }
+
+
 }

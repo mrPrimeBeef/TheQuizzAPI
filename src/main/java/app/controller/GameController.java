@@ -72,7 +72,7 @@ public class GameController {
 
             List<Player> players = playerDao.findAll();
 
-            Game game = gameService.createGame(players, filteredQuestions);
+//            Game game = gameService.createGame(players, filteredQuestions);
 
             List<PlayerNameAndPoints> playerNameAndPointsList = players.stream()
                     .map(player -> new PlayerNameAndPoints(player.getName(), player.getPoints()))
@@ -93,9 +93,9 @@ public class GameController {
         return null;
     }
 
-    public Integer getNumberOfPlayers(Context ctx) {
+    public void getNumberOfPlayers(Context ctx) {
         String numberOfPlayers = ctx.pathParam("number");
-        return Integer.parseInt(numberOfPlayers);
+        gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers));
     }
 
     public List<Player> createPlayers(Context ctx) {

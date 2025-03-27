@@ -18,11 +18,11 @@ public class GameService {
         this.playerDao = playerDao;
     }
 
-    public Game createGame(List<Player> players, List<Question> questions) {
+    public Game createGame(List<Player> players, List<Question> questions, Integer nummberOfPlayers) {
         Game game = new Game();
         game.setPlayers(players);
         game.setQuestions(questions);
-//        game.s
+        game.setNumberOfPlayers(nummberOfPlayers);
         return gameDao.create(game);
     }
 
@@ -35,5 +35,9 @@ public class GameService {
                     return playerDao.create(player);
                 })
                 .toList();
+    }
+
+    public void createNumberOfPlayers(int i) {
+//        gameDao.create();
     }
 }
