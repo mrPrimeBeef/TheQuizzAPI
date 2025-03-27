@@ -1,6 +1,5 @@
 package app.daos;
 
-import app.config.HibernateConfig;
 import app.entities.Role;
 import jakarta.persistence.EntityManagerFactory;
 
