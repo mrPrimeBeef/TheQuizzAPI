@@ -51,14 +51,14 @@ public class Routes {
                 }
             }, Role.ADMIN, Role.USER);
 
-            get("/{gameid}/questions?limit={number}&category={category}&difficulty={difficulty}", (ctx) -> {
+            get("/{gameid}/questions", (ctx) -> {
                 try {
                     GameDTO gameDTO = gameController.makeGame(ctx);
                     ctx.status(200).json(gameDTO);
                 } catch (Exception e) {
                     handleGetException(ctx, e);
                 }
-            }, Role.ADMIN, Role.USER);
+            }, Role.ADMIN, Role.USER, Role.ANYONE);
 
         };
     }
@@ -94,12 +94,14 @@ public class Routes {
 
     private EndpointGroup populateRoutes() {
         return () -> {
-            get("/populate", (ctx) -> {
+            get("", (ctx) -> {
                 try {
                     try {
                         gameController.populateDatabaseRoles(ctx);
                     } catch (Exception e) {
+                    } finally {
                         gameController.populateDatabaseWithScienceComputersQuestions(ctx);
+                        ctx.status(200).result("Database now got data in it");
                     }
                     ctx.status(200);
                 } catch (Exception e) {

@@ -22,8 +22,8 @@ Content-Type: application/json
 %}
 
 ###
-GET http://localhost:7070/api/game/populate
-#Authorization: Bearer {{token}}
+GET http://localhost:7070/api/populate
+Authorization: Bearer {{token}}
 
 ###
 POST http://localhost:7070/api/game/2
@@ -41,6 +41,6 @@ Content-Type: application/json
     {"name": "Player2", "points": 0}
   ]
 }
-### /{gameid}/questions?limit={number}&category={category}&difficulty={difficulty}
-GET http://localhost:7070/api/game/1/questions?limit=10&category={Science: Computers}&difficulty={EASY}
+###
+GET http://localhost:7070/api/game/1/questions?limit=10&category=Computers&difficulty=EASY
 Authorization: Bearer {{token}}

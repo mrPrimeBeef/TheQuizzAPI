@@ -12,6 +12,8 @@ import app.utils.Populate;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,13 +42,15 @@ public class GameController {
 
             List<Question> questions = questionDao.findAll();
 
+            String category = URLDecoder.decode(ctx.queryParam("category"), StandardCharsets.UTF_8);
+
             List<String> uniqueCategories = questions.stream()
                     .map(Question::getCategory)
                     .distinct()
                     .collect(Collectors.toList());
 
-            String category = ctx.queryParam("category");
-            if (category != null && !uniqueCategories.contains(category)) {
+
+            if (category == null && !uniqueCategories.contains(category)) {
                 throw new ValidationException("From makeGame(), cannot make a game with the category " + category);
             }
 
@@ -64,14 +68,14 @@ public class GameController {
             }
 
             List<Question> filteredQuestions = questions.stream()
-                    .filter(question -> question.getCategory().equals(category))
                     .filter(question -> question.getDifficulty().name().equals(difficulty))
                     .limit(limit)
                     .collect(Collectors.toList());
 
             List<Player> players = playerDao.findAll();
 
-            Game activeGame = gameDao.findById(ctx.queryParam("gameid"));
+            Integer gameid = Integer.parseInt(ctx.pathParam("gameid"));
+            Game activeGame = gameDao.findById(gameid);
 
             gameService.createGame(players, filteredQuestions, activeGame);
 
