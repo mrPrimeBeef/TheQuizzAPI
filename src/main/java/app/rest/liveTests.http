@@ -14,6 +14,14 @@ POST https://thequizzapi.sem2.dk/api/auth/login
 Content-Type: application/json
 
 {
+"username": "Jim",
+"password": "1234"
+}
+###
+POST https://thequizzapi.sem2.dk/api/auth/login
+Content-Type: application/json
+
+{
   "username": "PineBoxJim",
   "password": "4321"
 }

@@ -9,6 +9,7 @@ import app.dtos.QuestionBody;
 import app.entities.Game;
 import app.entities.Player;
 import app.entities.enums.Role;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 
@@ -20,6 +21,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class Routes {
     private final ISecurityController securityController;
     private final GameController gameController;
+    private final ObjectMapper jsonMapper = new ObjectMapper();
 
     public Routes(SecurityController securityController, GameController gameController) {
         this.gameController = gameController;
@@ -105,6 +107,9 @@ public class Routes {
 
     private EndpointGroup adminRoutes() {
         return () -> {
+            get("/test", ctx -> ctx.json(jsonMapper.createObjectNode().put("msg", "Hello from Admin"))
+                    , Role.ADMIN);
+
             get("populate", (ctx) -> {
                 try {
                     try {
