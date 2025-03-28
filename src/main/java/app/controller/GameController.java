@@ -1,6 +1,10 @@
 package app.controller;
 
-import app.config.HibernateConfig;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import app.daos.*;
 import app.dtos.*;
 import app.entities.Game;
@@ -11,11 +15,6 @@ import app.services.GameService;
 import app.utils.Populate;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
-
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameController {
     private final GameService gameService;

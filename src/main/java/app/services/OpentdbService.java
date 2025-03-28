@@ -22,22 +22,13 @@ public class OpentdbService {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        // hent ny token https://opentdb.com/api_token.php?command=request
-        String tokenResponse = ApiReader.getDataFromUrl("https://opentdb.com/api_token.php?command=request");
-        String token;
-        try {
-            JsonNode tokenNode = objectMapper.readTree(tokenResponse);
-            token = tokenNode.get("token").asText();
-        } catch (Exception e) {
-            throw new ApiException("Failed to parse token from API response", e);
-        }
+        String token = getToken(objectMapper);
 
         String url = "https://opentdb.com/api.php?amount=50&category=18&token=" + token;
 
         boolean hasMoreQuestions = true; // Flag til at tjekke, om der stadig er spørgsmål
 
         while (hasMoreQuestions) {
-            for (int i = 0; i < 4; i++) { // Op til 4 forsøg per batch
                 try {
                     String json = ApiReader.getDataFromUrl(url);
                     if (json != null) {
@@ -49,29 +40,35 @@ public class OpentdbService {
                             hasMoreQuestions = false;
                             break;
                         }
-
                         // Tilføj de hentede spørgsmål til listen
                         for (QuestionResponseBody b : response.results()) {
                             Difficulty difficulty = Difficulty.valueOf(b.difficulty().toUpperCase());
                             questionsList.add(new Question(b.question(), b.correct_answer(), b.incorrect_answers(), b.category(), difficulty));
                         }
-
-                        break; // Succesfuldt API-kald, stop retry-løkken
                     }
                 } catch (Exception e) {
-                    if (i == 3) { // Hvis det er sidste forsøg, kast en fejl
-                        throw new ApiException("Fejl ved API-kald efter flere forsøg", e);
-                    }
+                    throw new ApiException("Error calling api", e);
                 }
-
                 // Vent 5 sekunder før næste forsøg
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }
         }
         return questionsList;
+    }
+
+    private static String getToken(ObjectMapper objectMapper) {
+        // hent ny token https://opentdb.com/api_token.php?command=request
+        String tokenResponse = ApiReader.getDataFromUrl("https://opentdb.com/api_token.php?command=request");
+        String token;
+        try {
+            JsonNode tokenNode = objectMapper.readTree(tokenResponse);
+            token = tokenNode.get("token").asText();
+        } catch (Exception e) {
+            throw new ApiException("Failed to parse token from API response", e);
+        }
+        return token;
     }
 }

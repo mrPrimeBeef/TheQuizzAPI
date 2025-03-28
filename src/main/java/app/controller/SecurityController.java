@@ -1,16 +1,8 @@
 package app.controller;
 
-import app.config.HibernateConfig;
-import app.daos.ISecurityDAO;
-import app.daos.RoleDao;
-import app.daos.SecurityDAO;
-import app.entities.User;
-import app.entities.enums.Role;
-import app.exceptions.ApiException;
-import app.exceptions.DaoException;
-import app.exceptions.NotAuthorizedException;
-import app.exceptions.ValidationException;
-import app.utils.Utils;
+import java.text.ParseException;
+import java.util.Set;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dk.bugelhartmann.ITokenSecurity;
@@ -26,8 +18,16 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.util.Set;
+import app.daos.ISecurityDAO;
+import app.daos.RoleDao;
+import app.daos.SecurityDAO;
+import app.entities.User;
+import app.entities.enums.Role;
+import app.exceptions.ApiException;
+import app.exceptions.DaoException;
+import app.exceptions.NotAuthorizedException;
+import app.exceptions.ValidationException;
+import app.utils.Utils;
 
 public class SecurityController implements ISecurityController {
     private final ITokenSecurity tokenSecurity = new TokenSecurity();
