@@ -6,7 +6,7 @@ POST https://thequizzapi.sem2.dk/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "Jim",
+  "username": "Jim2",
   "password": "1234"
 }
 ###

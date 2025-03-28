@@ -58,7 +58,7 @@ class SecurityControllerTest {
                 .handleException()
                 .checkSecurityRoles()
                 .startServer(7079);
-        RestAssured.baseURI = "https://thequizzapi.sem2.dk/api";
+        RestAssured.baseURI = "http://localhost:7079/api";
     }
 
     @BeforeEach
@@ -149,28 +149,21 @@ class SecurityControllerTest {
     @Test
     void testRegister_Success() {
         Map<String, String> registerRequest = new HashMap<>();
-        registerRequest.put("username", "newuserTest");
+        registerRequest.put("username", "newTestUser");
         registerRequest.put("password", "newpassword");
 
-        // Print the request to see exactly what's being sent
-        System.out.println("Request Body: " + registerRequest);
-
         Response response = given()
-                .contentType(ContentType.JSON)
+                .contentType("application/json")
                 .body(registerRequest)
                 .when()
                 .post("/auth/register")
                 .then()
                 .extract().response();
 
-        // Print full response for debugging
-        System.out.println("Response Status: " + response.getStatusCode());
-        System.out.println("Response Body: " + response.getBody().asString());
-
         response.then()
                 .statusCode(201)
                 .body("token", notNullValue())
-                .body("username", equalTo("newuserTest"));
+                .body("username", equalTo("newTestUser"));
     }
 
     @Test
@@ -207,31 +200,29 @@ class SecurityControllerTest {
         }
     }
 
-    //TODO first incommet it when new endpoint pushed
-//    @Test
-//    void testProtectedUserEndpoint_WithUserRole() {
-//        // First login to get a token
-//        Map<String, String> loginRequest = new HashMap<>();
-//        loginRequest.put("username", TEST_USER);
-//        loginRequest.put("password", TEST_PASSWORD);
-//
-//        Response loginResponse = given()
-//                .contentType(ContentType.JSON)
-//                .body(loginRequest)
-//                .post("/auth/login");
-//
-//        String token = loginResponse.jsonPath().getString("token");
-//        System.out.println(token);
-//
-//        // Then access protected user endpoint
-//        given()
-//                .header("Authorization", "Bearer " + token)
-//                .when()
-//                .post("/admin/test")
-//                .then()
-//                .body("msg", containsString("Hello from Admin"))
-//                .statusCode(200);
-//    }
+    @Test
+    void testProtectedUserEndpoint_WithUserRole() {
+        // First login to get a token
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("username", TEST_ADMIN);
+        loginRequest.put("password", TEST_PASSWORD);
+
+        Response loginResponse = given()
+                .contentType(ContentType.JSON)
+                .body(loginRequest)
+                .post("/auth/login");
+
+        String token = loginResponse.jsonPath().getString("token");
+
+        // Then access protected user endpoint
+        given()
+                .header("Authorization", "Bearer " + token)
+                .when()
+                .get("/admin/test")
+                .then()
+                .body("msg", containsString("Hello from Admin"))
+                .statusCode(200);
+    }
 
     @Test
     void testProtectedAdminEndpoint_WithUserRole() {

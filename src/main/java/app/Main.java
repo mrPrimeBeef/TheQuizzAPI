@@ -9,7 +9,6 @@ import app.daos.PlayerDao;
 import app.daos.RoleDao;
 import app.rest.Routes;
 import app.services.GameService;
-import app.utils.Populate;
 import jakarta.persistence.EntityManagerFactory;
 
 public class Main {
