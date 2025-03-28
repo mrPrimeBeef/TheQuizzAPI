@@ -6,8 +6,8 @@ POST http://localhost:7070/api/auth/register
 Content-Type: application/json
 
 {
-    "username": "Jim",
-    "password": "1234"
+  "username": "Jim",
+  "password": "1234"
 }
 ###
 POST http://localhost:7070/api/auth/login
@@ -22,7 +22,7 @@ Content-Type: application/json
 %}
 
 ###
-GET http://localhost:7070/api/populate
+GET http://localhost:7070/api/admin/populate
 Authorization: Bearer {{token}}
 
 ###
@@ -31,20 +31,20 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-POST http://localhost:7070/api/game/1/players/names
+POST http://localhost:7070/api/game/2/players/names
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "players": [
-    {"name": "Player1", "points": 0},
-    {"name": "Player2", "points": 0}
+    {"name": "Player1Game2", "points": 0},
+    {"name": "Player2Game2", "points": 0}
   ]
 }
 ###
-GET http://localhost:7070/api/game/1/questions?limit=10&category=Computers&difficulty=EASY
+GET http://localhost:7070/api/game/2/questions?limit=10&category=Science: Computers&difficulty=EASY
 Authorization: Bearer {{token}}
 
 ###
 GET http://localhost:7070/api/game/1/score
-#Authorization: Bearer {{token}}
+Authorization: Bearer {{token}}

@@ -20,5 +20,31 @@ Content-Type: application/json
 > {%
     client.global.set("token", response.body.token);
 %}
+
 ###
-POST https://thequizzapi.sem2.dk/api/game/populate
+GET https://thequizzapi.sem2.dk/api/admin/populate
+Authorization: Bearer {{token}}
+
+###
+POST https://thequizzapi.sem2.dk/api/game/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+POST https://thequizzapi.sem2.dk/api/game/1/players/names
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "players": [
+    {"name": "Player1", "points": 0},
+    {"name": "Player2", "points": 0}
+  ]
+}
+###
+GET https://thequizzapi.sem2.dk/api/game/1/questions?limit=10&category=Science: Computers&difficulty=EASY
+Authorization: Bearer {{token}}
+
+###
+GET https://thequizzapi.sem2.dk/api/game/1/score
+Authorization: Bearer {{token}}

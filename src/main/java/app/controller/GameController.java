@@ -72,9 +72,8 @@ public class GameController {
                     .limit(limit)
                     .collect(Collectors.toList());
 
-            List<Player> players = playerDao.findAll();
-
             Integer gameid = Integer.parseInt(ctx.pathParam("gameid"));
+            List<Player> players = playerDao.findAllPlayersByGameId(gameid);
             Game activeGame = gameDao.findById(gameid);
 
             gameService.createGame(players, filteredQuestions, activeGame);
