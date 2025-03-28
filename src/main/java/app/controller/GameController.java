@@ -50,7 +50,7 @@ public class GameController {
                     .collect(Collectors.toList());
 
 
-            if (category == null && !uniqueCategories.contains(category)) {
+            if (category == null || !uniqueCategories.contains(category)) {
                 throw new ValidationException("From makeGame(), cannot make a game with the category " + category);
             }
 
