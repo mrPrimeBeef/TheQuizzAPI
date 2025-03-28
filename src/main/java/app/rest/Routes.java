@@ -58,7 +58,7 @@ public class Routes {
                 } catch (Exception e) {
                     handleGetException(ctx, e);
                 }
-            }, Role.ADMIN, Role.USER, Role.ANYONE);
+            }, Role.ADMIN, Role.USER);
 
         };
     }
