@@ -103,11 +103,12 @@ public class GameController {
         return gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers));
     }
 
-    public List<Player> createPlayers(Context ctx) {
+    public PlayerNamesDTO createPlayers(Context ctx) {
         PlayerNamesDTO playerNamesDTO = ctx.bodyAsClass(PlayerNamesDTO.class);
         String gameidStr = ctx.pathParam("gameid");
         Integer gameid = Integer.parseInt(gameidStr);
-        return gameService.createPlayers(playerNamesDTO.players(), gameid);
+        gameService.createPlayers(playerNamesDTO.players(), gameid);
+        return playerNamesDTO;
     }
 
     public QuestionBody getOneQuestion() {
@@ -121,5 +122,11 @@ public class GameController {
 
     public void populateDatabaseRoles(Context ctx) {
         Populate.usersAndRoles(securityDAO);
+    }
+
+    public PlayerNamesDTO getScore(Context ctx) {
+        Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
+        PlayerNamesDTO scoresAndNames = gameService.getScores(gameId);
+        return scoresAndNames;
     }
 }

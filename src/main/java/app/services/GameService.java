@@ -3,6 +3,7 @@ package app.services;
 import app.daos.GameDao;
 import app.daos.PlayerDao;
 import app.dtos.PlayerNameAndPoints;
+import app.dtos.PlayerNamesDTO;
 import app.entities.Game;
 import app.entities.Player;
 import app.entities.Question;
@@ -42,5 +43,10 @@ public class GameService {
         game.setNumberOfPlayers(numberOfPlayers);
         gameDao.create(game);
         return game.getId();
+    }
+
+    public PlayerNamesDTO getScores(Integer gameId) {
+        List<Player> players = playerDao.findAllPlayersByGameId(gameId);
+        return PlayerNamesDTO.convertFromEntityToDTO(players);
     }
 }

@@ -44,3 +44,7 @@ Content-Type: application/json
 ###
 GET http://localhost:7070/api/game/1/questions?limit=10&category=Computers&difficulty=EASY
 Authorization: Bearer {{token}}
+
+###
+GET http://localhost:7070/api/game/1/score
+#Authorization: Bearer {{token}}

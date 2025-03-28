@@ -4,6 +4,7 @@ import app.controller.GameController;
 import app.controller.ISecurityController;
 import app.controller.SecurityController;
 import app.dtos.GameDTO;
+import app.dtos.PlayerNamesDTO;
 import app.dtos.QuestionBody;
 import app.entities.Game;
 import app.entities.Player;
@@ -29,7 +30,7 @@ public class Routes {
         return () -> {
             path("game", protectedGameRoutes());
             path("auth", authRoutes());
-            path("populate", populateRoutes());
+            path("admin", adminRoutes());
         };
     }
 
@@ -38,6 +39,7 @@ public class Routes {
             post("/{number}", (ctx) -> {
                 try {
                     Integer gameId = gameController.getNumberOfPlayers(ctx);
+                    ctx.status(201);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
@@ -45,7 +47,8 @@ public class Routes {
 
             post("/{gameid}/players/names", (ctx) -> {
                 try {
-                    List<Player> players = gameController.createPlayers(ctx);
+                    PlayerNamesDTO players = gameController.createPlayers(ctx);
+                    ctx.status(201).json(players);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
@@ -54,12 +57,20 @@ public class Routes {
             get("/{gameid}/questions", (ctx) -> {
                 try {
                     GameDTO gameDTO = gameController.makeGame(ctx);
-                    ctx.status(200).json(gameDTO);
+                    ctx.status(201).json(gameDTO);
                 } catch (Exception e) {
                     handleGetException(ctx, e);
                 }
             }, Role.ADMIN, Role.USER);
 
+            get("/{gameid}/score", (ctx) -> {
+                try {
+                    PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
+                    ctx.status(200).json(playerNamesDTO);
+                } catch (Exception e) {
+                    handleGetException(ctx, e);
+                }
+            }, Role.USER, Role.ADMIN);
         };
     }
 
@@ -92,9 +103,9 @@ public class Routes {
         };
     }
 
-    private EndpointGroup populateRoutes() {
+    private EndpointGroup adminRoutes() {
         return () -> {
-            get("", (ctx) -> {
+            get("populate", (ctx) -> {
                 try {
                     try {
                         gameController.populateDatabaseRoles(ctx);
@@ -110,6 +121,7 @@ public class Routes {
             }, Role.ADMIN);
         };
     }
+
 
     private void handlePostException(Context ctx, Exception e) {
         ctx.status(400).json(Map.of("status", 400, "msg", "Ugyldig anmodning (f.eks. manglende felt)"));
