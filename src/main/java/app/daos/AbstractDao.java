@@ -1,13 +1,13 @@
 package app.daos;
 
-import app.exceptions.DaoException;
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
-import java.util.List;
+import app.exceptions.DaoException;
 
 public abstract class AbstractDao<T, I> {
-
     protected final EntityManagerFactory emf;
     protected final Class<T> entityClass;
 

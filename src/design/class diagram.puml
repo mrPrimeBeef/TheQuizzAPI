@@ -1,0 +1,154 @@
+@startuml
+
+class Main {
+    + main(String[] args)
+}
+
+class Routes {
+    + getRoutes(): EndpointGroup
+    + protectedGameRoutes(): EndpointGroup
+    + authRoutes(): EndpointGroup
+    + adminRoutes(): EndpointGroup
+    - handlePostException(Context ctx, Exception e)
+    - handleGetException(Context ctx, Exception e)
+}
+
+class GameController {
+    + makeGame(Context ctx): GameDTO
+    + getNumberOfPlayers(Context ctx): Integer
+    + createPlayers(Context ctx): PlayerNamesDTO
+    + getOneQuestion(): QuestionBody
+    + populateDatabaseWithScienceComputersQuestions(Context ctx)
+    + populateDatabaseRoles(Context ctx)
+    + getScore(Context ctx): PlayerNamesDTO
+}
+
+class GameService {
+    + createGame(List<Player> players, List<Question> questions, Game activeGame)
+    + createNumberOfPlayers(int i): Integer
+    + createPlayers(List<PlayerNameAndPoints> playerNamesAndPoints, Integer gameId)
+    + getScores(Integer gameId): PlayerNamesDTO
+}
+
+class SecurityController {
+    + healthCheck(Context ctx)
+    + login(Context ctx)
+    + register(Context ctx)
+}
+
+class GameDao {
+    + getInstance(EntityManagerFactory emf): GameDao
+    + findById(Integer id): Game
+    + findAllPlayersByGameId(Integer gameId): List<Player>
+}
+
+class PlayerDao {
+    + getInstance(EntityManagerFactory emf): PlayerDao
+    + create(Player player): Player
+    + findAllPlayersByGameId(Integer gameId): List<Player>
+}
+
+class RoleDao {
+    + getInstance(EntityManagerFactory emf): RoleDao
+}
+
+class QuestionDao {
+    + getInstance(EntityManagerFactory emf): QuestionDao
+    + findAll(): List<Question>
+    + findById(Integer id): Question
+}
+
+class SecurityDAO {
+    + getInstance(EntityManagerFactory emf, RoleDao roleDao): SecurityDAO
+}
+
+class Populate {
+    + addQuestions(EntityManagerFactory emf)
+    + usersAndRoles(SecurityDAO securityDAO)
+}
+
+class Game {
+    + getId(): Integer
+    + getCategory(): String
+    + getDifficulty(): String
+    + getDescription(): String
+    + getRightAnswer(): String
+    + getWrongAnswers(): List<String>
+}
+
+class Player {
+    + getId(): Integer
+    + getName(): String
+    + getPoints(): Integer
+    + getGameId(): Integer
+    + setGameId(Integer gameId)
+}
+
+class Question {
+    + getId(): Integer
+    + getCategory(): String
+    + getDifficulty(): String
+    + getDescription(): String
+    + getRightAnswer(): String
+    + getWrongAnswers(): List<String>
+}
+
+class GameDTO {
+    + GameDTO(PlayerNamesDTO playerNamesDTO, QuestionDTO questionDTO)
+}
+
+class PlayerNamesDTO {
+    + PlayerNamesDTO(List<PlayerNameAndPoints> players)
+}
+
+class PlayerNameAndPoints {
+    + getName(): String
+    + getPoints(): Integer
+}
+
+class QuestionDTO {
+    + QuestionDTO(List<QuestionBody> questions)
+}
+
+class QuestionBody {
+    + getDifficulty(): String
+    + getCategory(): String
+    + getDescription(): String
+    + getRightAnswer(): String
+    + getWrongAnswers(): List<String>
+}
+
+class User {
+    + getId(): Integer
+    + getUsername(): String
+    + getPassword(): String
+    + getRole(): Role
+}
+
+Main --> Routes
+Routes --> GameController
+Routes --> SecurityController
+GameController --> GameService
+GameController --> GameDao
+GameController --> PlayerDao
+GameController --> QuestionDao
+GameController --> SecurityDAO
+GameService --> GameDao
+GameService --> PlayerDao
+GameService --> QuestionDao
+SecurityController --> SecurityDAO
+SecurityDAO --> RoleDao
+Populate --> SecurityDAO
+Populate --> GameDao
+Populate --> QuestionDao
+GameDTO --> PlayerNamesDTO
+GameDTO --> QuestionDTO
+PlayerNamesDTO --> PlayerNameAndPoints
+QuestionDTO --> QuestionBody
+User --> Role
+User --> Game
+Game --> Player
+Question --> Game
+
+
+@enduml

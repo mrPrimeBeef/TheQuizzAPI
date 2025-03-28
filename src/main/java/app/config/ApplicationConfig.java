@@ -1,7 +1,5 @@
 package app.config;
 
-import app.controller.ISecurityController;
-import app.controller.SecurityController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
@@ -9,7 +7,8 @@ import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 
-import static io.javalin.apibuilder.ApiBuilder.path;
+import app.controller.ISecurityController;
+import app.controller.SecurityController;
 
 public class ApplicationConfig {
     private static ApplicationConfig applicationConfig;
@@ -35,7 +34,7 @@ public class ApplicationConfig {
             config.router.contextPath = "/api";
             config.bundledPlugins.enableRouteOverview("/routes");
             config.bundledPlugins.enableDevLogging();
-             config.showJavalinBanner = true;
+            config.showJavalinBanner = true;
         });
         return applicationConfig;
     }

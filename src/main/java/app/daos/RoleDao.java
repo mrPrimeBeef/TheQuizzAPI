@@ -1,7 +1,8 @@
 package app.daos;
 
-import app.entities.Role;
 import jakarta.persistence.EntityManagerFactory;
+
+import app.entities.Role;
 
 public class RoleDao extends AbstractDao<Role, Integer> {
     private static RoleDao instance;

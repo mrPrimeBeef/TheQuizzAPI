@@ -1,14 +1,13 @@
 package app.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Getter
 @Entity
@@ -63,13 +62,5 @@ public class User implements ISecurityUser {
 
     public void removeRole(String roleName) {
         roles.removeIf(role -> role.getName().equals(roleName));
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", roles=" + roles +
-                '}';
     }
 }

@@ -1,10 +1,10 @@
 package app.daos;
 
-import app.config.HibernateConfig;
-import app.entities.Question;
 import jakarta.persistence.EntityManagerFactory;
 
-public class QuestionDao extends AbstractDao<Question, Integer>{
+import app.entities.Question;
+
+public class QuestionDao extends AbstractDao<Question, Integer> {
     private static QuestionDao instance;
 
     private QuestionDao(EntityManagerFactory emf) {

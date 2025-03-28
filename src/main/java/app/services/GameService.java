@@ -1,5 +1,7 @@
 package app.services;
 
+import java.util.List;
+
 import app.daos.GameDao;
 import app.daos.PlayerDao;
 import app.dtos.PlayerNameAndPoints;
@@ -7,8 +9,6 @@ import app.dtos.PlayerNamesDTO;
 import app.entities.Game;
 import app.entities.Player;
 import app.entities.Question;
-
-import java.util.List;
 
 public class GameService {
     private final GameDao gameDao;

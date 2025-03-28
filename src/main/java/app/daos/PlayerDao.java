@@ -1,16 +1,15 @@
 package app.daos;
 
-import app.config.HibernateConfig;
-import app.entities.Player;
-import app.entities.Question;
-import app.exceptions.DaoException;
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
-import java.util.List;
+import app.entities.Player;
+import app.exceptions.DaoException;
 
-public class PlayerDao extends AbstractDao<Player, Integer>{
+public class PlayerDao extends AbstractDao<Player, Integer> {
     private static PlayerDao instance;
 
     private PlayerDao(EntityManagerFactory emf) {
@@ -23,6 +22,7 @@ public class PlayerDao extends AbstractDao<Player, Integer>{
         }
         return instance;
     }
+
     public List<Player> findAllPlayersByGameId(Integer gameId) {
         try (EntityManager em = emf.createEntityManager()) {
             String jpql = "SELECT p FROM Player p WHERE p.game.id = :gameId"; // Brug ":" foran parameteren
@@ -36,8 +36,3 @@ public class PlayerDao extends AbstractDao<Player, Integer>{
         }
     }
 }
-//try(EntityManager em = emf.createEntityManager()){
-//String jpql = "SELECT SUM (e.salary) FROM Employee e";
-//TypedQuery<Double> query = em.createQuery(jpql, Double.class);
-//            return query.getSingleResult();
-//        }

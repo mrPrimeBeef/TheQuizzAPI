@@ -1,18 +1,18 @@
 package app.daos;
 
-import app.entities.Role;
-import app.entities.User;
-import app.exceptions.DaoException;
-import app.exceptions.ValidationException;
-import dk.bugelhartmann.UserDTO;
+import java.util.stream.Collectors;
+
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import dk.bugelhartmann.UserDTO;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import app.entities.Role;
+import app.entities.User;
+import app.exceptions.DaoException;
+import app.exceptions.ValidationException;
 
 public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurityDAO {
     private static SecurityDAO instance;
@@ -47,25 +47,6 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
             em.getTransaction().commit();
         } catch (Exception e) {
             throw new DaoException("Error in createWithRole()");
-        }
-    }
-
-    public User createWithRole(User user) {
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            Role userRole = roleDao.findById("USER");
-            if (userRole == null) {
-                userRole = new Role("USER");
-                roleDao.create(userRole);
-            }
-            user.addRole(userRole);
-        }
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            User managedUser = em.merge(user);
-            em.getTransaction().commit();
-            return managedUser;
-        } catch (Exception e) {
-            throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
         }
     }
 
@@ -136,7 +117,27 @@ public class SecurityDAO extends AbstractDao<User, Integer> implements ISecurity
             throw new DaoException("Error removing role from user", e);
         }
     }
+
     public RoleDao getRoleDao() {
         return roleDao;
+    }
+
+    private User createWithRole(User user) {
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            Role userRole = roleDao.findById("USER");
+            if (userRole == null) {
+                userRole = new Role("USER");
+                roleDao.create(userRole);
+            }
+            user.addRole(userRole);
+        }
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            User managedUser = em.merge(user);
+            em.getTransaction().commit();
+            return managedUser;
+        } catch (Exception e) {
+            throw new DaoException("Error in createWithRole(): " + e.getMessage(), e);
+        }
     }
 }

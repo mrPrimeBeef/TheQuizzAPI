@@ -1,12 +1,11 @@
 package app.entities;
 
-import app.entities.enums.GameMode;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +16,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToMany (mappedBy = "games")
+    @ManyToMany(mappedBy = "games")
     private List<User> users;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -43,7 +42,7 @@ public class Game {
 //        this.gameMode = gameMode;
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(Player player) {
         player.setGame(this);
     }
 }

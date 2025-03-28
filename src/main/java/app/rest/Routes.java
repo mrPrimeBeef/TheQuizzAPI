@@ -1,22 +1,20 @@
 package app.rest;
 
+import java.util.Map;
+
+import static io.javalin.apibuilder.ApiBuilder.*;
+
+import io.javalin.http.Context;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.apibuilder.EndpointGroup;
+
 import app.controller.GameController;
 import app.controller.ISecurityController;
 import app.controller.SecurityController;
 import app.dtos.GameDTO;
 import app.dtos.PlayerNamesDTO;
 import app.dtos.QuestionBody;
-import app.entities.Game;
-import app.entities.Player;
 import app.entities.enums.Role;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.javalin.apibuilder.EndpointGroup;
-import io.javalin.http.Context;
-
-import java.util.List;
-import java.util.Map;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Routes {
     private final ISecurityController securityController;
@@ -91,6 +89,7 @@ public class Routes {
             post("/login", (ctx) -> {
                 try {
                     securityController.login(ctx);
+                    ctx.status(200);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
@@ -98,6 +97,7 @@ public class Routes {
             post("/register", (ctx) -> {
                 try {
                     securityController.register(ctx);
+                    ctx.status(200);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }

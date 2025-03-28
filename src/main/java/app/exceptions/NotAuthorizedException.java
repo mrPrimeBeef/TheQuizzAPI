@@ -7,10 +7,6 @@ public class NotAuthorizedException extends Exception {
         super(message);
         this.statusCode = statusCode;
     }
-    public NotAuthorizedException(int statusCode, String message, Throwable cause) {
-        super(message, cause);
-        this.statusCode = statusCode;
-    }
 
     public int getStatusCode() {
         return statusCode;

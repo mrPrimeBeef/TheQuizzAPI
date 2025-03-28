@@ -1,10 +1,10 @@
 package app.entities;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import jakarta.persistence.*;
+import lombok.Getter;
 
 @Getter
 @Entity

@@ -1,17 +1,18 @@
 package app.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import app.dtos.QuestionResponseBody;
 import app.dtos.QuestionResponseDTO;
 import app.entities.Question;
 import app.entities.enums.Difficulty;
 import app.exceptions.ApiException;
 import app.utils.ApiReader;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class OpentdbService {
     // https://opentdb.com/api_config.php

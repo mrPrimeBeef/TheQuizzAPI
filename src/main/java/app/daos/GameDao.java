@@ -1,11 +1,10 @@
 package app.daos;
 
-import app.config.HibernateConfig;
-import app.entities.Game;
-import app.entities.Question;
 import jakarta.persistence.EntityManagerFactory;
 
-public class GameDao extends AbstractDao<Game, Integer>{
+import app.entities.Game;
+
+public class GameDao extends AbstractDao<Game, Integer> {
     private static GameDao instance;
 
     private GameDao(EntityManagerFactory emf) {
@@ -18,6 +17,4 @@ public class GameDao extends AbstractDao<Game, Integer>{
         }
         return instance;
     }
-
-
 }
