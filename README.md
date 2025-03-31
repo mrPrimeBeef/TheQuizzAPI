@@ -9,7 +9,8 @@ Det er designet til at man bruger en enhed(mobil/computer) til quizzen, og ikke 
 Når proof of concept er færdigt, vil der blive tilføjet flere kategorier.
 
 ## Base URL
-API’et kan tilgås på: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api/routes)
+API’et kan tilgås på: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api)
+Her kan de routes der er ses: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api/routes)
 
 ## Endpoints
 
