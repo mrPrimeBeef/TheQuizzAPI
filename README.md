@@ -20,7 +20,7 @@ Routes: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api/routes)
 | `POST` | `/game/{number}` | `{}` | `201` | Creates a new game with a specified number of players. |
 | `POST` | `/game/{gameid}/players/names` | `{ "player": "name" }` | `(e1)` | Adds players to a game. |
 | `GET` | `/game/{gameid}/questions?limit={numberOfQuestions}&category={category}&difficulty={difficulty}` | | `{ "game": {...} }` | Retrieves questions based on category and difficulty level. |
-| `POST` | `/api/game/{gameId}/player/{playerid}/question/{questionId}/answer` | `{ "answer": "Coding language" }` | `{ "correct": true, "pointsEarned": 10, "totalScore": 50 }` | The player submits an answer. |
+| `POST` | `/api/game/{playerid}/{questionid}/answer` | `?` | `{ "player": {...} }` | The player submits an answer and gets scoreboard |
 | `GET` | `/api/game/{gameId}/score` | | `{ "player": {...} }` | Retrieves the score for an ongoing game. |
 
 ### Admin
