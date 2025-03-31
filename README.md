@@ -1,4 +1,5 @@
 # TheQuizz API
+![Quiz API Logo](images/logo)
 
 ## Om
 TheQuizz API er en vidensquiz med fokus på computer science som et proof of concept. På sigt kan quizzen udvides til at dække andre videnskabelige emner, eventuelt tilføjes der også gåder man kan løse enkeltvis. Formålet er at skabe et sjovt og engagerende quiz-format, der kan bruges i sociale sammenhænge, f.eks. som en aktivitet til en hyggelig aften. 
