@@ -15,7 +15,6 @@ import app.entities.Player;
 import app.entities.Question;
 import app.exceptions.ValidationException;
 import app.services.GameService;
-import app.utils.Populate;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -23,19 +22,14 @@ public class GameController {
     private final GameService gameService;
     private QuestionDao questionDao;
     private PlayerDao playerDao;
-    private RoleDao roleDao;
     private GameDao gameDao;
-    private SecurityDAO securityDAO;
     private EntityManagerFactory emf;
 
     public GameController(GameService gameService, EntityManagerFactory emf) {
         this.gameService = gameService;
         this.questionDao = QuestionDao.getInstance(emf);
         this.playerDao = PlayerDao.getInstance(emf);
-        this.roleDao = RoleDao.getInstance(emf);
         this.gameDao = GameDao.getInstance(emf);
-        this.securityDAO = SecurityDAO.getInstance(emf, roleDao);
-
     }
 
     public GameDTO makeGame(Context ctx) {
@@ -126,17 +120,19 @@ public class GameController {
         return new QuestionBody(q.getDifficulty().toString(), q.getCategory(), q.getDescription(), q.getRightAnswer(), q.getWrongAnswers());
     }
 
-    public void populateDatabaseWithScienceComputersQuestions() {
-        Populate.addQuestions(emf);
-    }
-
-    public void populateDatabaseRoles() {
-        Populate.usersAndRoles(securityDAO);
-    }
-
     public PlayerNamesDTO getScore(Context ctx) {
         Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
         PlayerNamesDTO scoresAndNames = gameService.getScores(gameId);
         return scoresAndNames;
+    }
+
+    //TODO test score param if it works
+    public void updateScore(Context ctx) {
+        String answer = ctx.body();
+
+        Question question = questionDao.findById(ctx.pathParam("questionid"));
+        Player player = playerDao.findById(ctx.pathParam("playerid"));
+
+        gameService.updateScore(player, question, answer);
     }
 }

@@ -1,5 +1,6 @@
 package app;
 
+import app.controller.AdminController;
 import jakarta.persistence.EntityManagerFactory;
 
 import app.config.ApplicationConfig;
@@ -23,8 +24,9 @@ public class Main {
 
         SecurityController securityController = new SecurityController(emf, roleDao);
         GameController gameController = new GameController(gameService, emf);
+        AdminController adminController = new AdminController(emf);
 
-        Routes routes = new Routes(securityController, gameController);
+        Routes routes = new Routes(securityController, gameController, adminController);
 
         ApplicationConfig
                 .getInstance()

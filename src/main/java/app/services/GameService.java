@@ -45,6 +45,33 @@ public class GameService {
         return game.getId();
     }
 
+    public void updateScore(Player player, Question question, String answer){
+        int playerpoints;
+
+        if (answer.equals(question.getRightAnswer())) {
+            switch (question.getDifficulty()) {
+                case EASY:
+                    playerpoints = player.getPoints() + 10;
+                    player.setPoints(playerpoints);
+                    playerDao.update(player);
+                    break;
+                case MEDIUM:
+                    playerpoints = player.getPoints() + 15;
+                    player.setPoints(playerpoints);
+                    playerDao.update(player);
+                    break;
+                case HARD:
+                    playerpoints = player.getPoints() + 20;
+                    player.setPoints(playerpoints);
+                    playerDao.update(player);
+                    break;
+                default:
+                    // Add logic for default case here
+                    break;
+            }
+        }
+    }
+
     public PlayerNamesDTO getScores(Integer gameId) {
         List<Player> players = playerDao.findAllPlayersByGameId(gameId);
         return PlayerNamesDTO.convertFromEntityToDTO(players);

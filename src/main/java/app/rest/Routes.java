@@ -15,14 +15,18 @@ import app.dtos.GameDTO;
 import app.dtos.PlayerNamesDTO;
 import app.dtos.QuestionBody;
 import app.entities.enums.Role;
+import app.controller.AdminController;
+import app.dtos.QuestionDTO;
 
 public class Routes {
     private final ISecurityController securityController;
     private final GameController gameController;
+    private final AdminController adminController;
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
-    public Routes(SecurityController securityController, GameController gameController) {
+    public Routes(SecurityController securityController, GameController gameController, AdminController adminController) {
         this.gameController = gameController;
+        this.adminController = adminController;
         this.securityController = securityController;
     }
 
@@ -72,10 +76,12 @@ public class Routes {
                 }
             }, Role.USER, Role.ADMIN);
 
-            //TODO implement answering question
-            post("/{gameid}/answer", (ctx) -> {
+            //TODO check functionality
+            post("/{playerid}/{questionid}/answer", (ctx) -> {
                 try {
-                    ctx.status(201);
+                    gameController.updateScore(ctx);
+                    PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
+                    ctx.status(200).json(playerNamesDTO);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
@@ -122,10 +128,10 @@ public class Routes {
             get("populate", (ctx) -> {
                 try {
                     try {
-                        gameController.populateDatabaseRoles();
+                        adminController.populateDatabaseRoles();
                     } catch (Exception e) {
                     } finally {
-                        gameController.populateDatabaseWithScienceComputersQuestions();
+                        adminController.populateDatabaseWithScienceComputersQuestions();
                         ctx.status(200).result("Database now got data in it");
                     }
                     ctx.status(200);
@@ -133,9 +139,20 @@ public class Routes {
                     handlePostException(ctx, e);
                 }
             }, Role.ADMIN);
+
+            put("/question", ctx -> {
+                QuestionDTO q = adminController.createQuestion(ctx);
+                ctx.status(200).result("The question is in the database: " + q);
+            });
+
+            //TODO check functionality
+            delete("/question/{questionid}", ctx -> {
+                adminController.deleteQuestion(ctx);
+                ctx.status(200).result("The question is in the database is now gone");
+            });
+
         };
     }
-
 
     private void handlePostException(Context ctx, Exception e) {
         ctx.status(400).json(Map.of("status", 400, "msg", "Ugyldig anmodning (f.eks. manglende felt)"));
