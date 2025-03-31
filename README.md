@@ -1,53 +1,53 @@
 # TheQuizz API
 ![Quiz API Logo](images/logo.jpg)
 
-## Om
-TheQuizz API er en vidensquiz med fokus på computer science som et proof of concept. På sigt kan quizzen udvides til at dække andre videnskabelige emner, eventuelt tilføjes der også gåder man kan løse enkeltvis. Formålet er at skabe et sjovt og engagerende quiz-format, der kan bruges i sociale sammenhænge, f.eks. som en aktivitet til en hyggelig aften. 
+## About
+TheQuizz API is a knowledge quiz focusing on computer science as a proof of concept. In the future, the quiz can be expanded to cover other scientific topics, and possibly include riddles that can be solved individually. The goal is to create a fun and engaging quiz format that can be used in social settings, such as an activity for a cozy evening.
 
-Det er designet til at man bruger en enhed(mobil/computer) til quizzen, og ikke flere.
+It is designed to be played using a single device (mobile/computer) for the quiz, not multiple.
 
-Når proof of concept er færdigt, vil der blive tilføjet flere kategorier.
+Once the proof of concept is completed, more categories will be added.
 
 ## Base URL
-API’et kan tilgås på: [quizzapi.sem2.dk/api](http://quizzapi.sem2.dk/api)
-Her kan de routes der er ses: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api/routes)
+The API can be accessed at: [quizzapi.sem2.dk/api](http://quizzapi.sem2.dk/api)
+Routes: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api/routes)
 
 ## Endpoints
 
-### Spil
-| Metode | Endpoint | Request Body | Response | Beskrivelse |
+### Game
+| Method | Endpoint | Request Body | Response | Description |
 |--------|---------|--------------|----------|-------------|
-| `POST` | `/game/{number}` | `{}` | `201` | Opretter et nyt spil med et bestemt antal spillere. |
-| `POST` | `/game/{gameid}/players/names` | `{ "player": "navn" }` | `(e1)` | Tilføjer spillere til et spil. |
-| `GET` | `/game/{gameid}/questions?limit={numberOfQuestions}&category={category}&difficulty={difficulty}` | | `{ "game": {...} }` | Henter spørgsmål baseret på kategori og sværhedsgrad. |
-| `POST` | `/api/game/{gameId}/player/{playerid}/question/{questionId}/answer` | `{ "answer": "Coding language" }` | `{ "correct": true, "pointsEarned": 10, "totalScore": 50 }` | Spilleren sender et svar. |
-| `GET` | `/api/game/{gameId}/score` | | `{ "player": {...} }` | Henter stillingen for et igangværende spil. |
+| `POST` | `/game/{number}` | `{}` | `201` | Creates a new game with a specified number of players. |
+| `POST` | `/game/{gameid}/players/names` | `{ "player": "name" }` | `(e1)` | Adds players to a game. |
+| `GET` | `/game/{gameid}/questions?limit={numberOfQuestions}&category={category}&difficulty={difficulty}` | | `{ "game": {...} }` | Retrieves questions based on category and difficulty level. |
+| `POST` | `/api/game/{gameId}/player/{playerid}/question/{questionId}/answer` | `{ "answer": "Coding language" }` | `{ "correct": true, "pointsEarned": 10, "totalScore": 50 }` | The player submits an answer. |
+| `GET` | `/api/game/{gameId}/score` | | `{ "player": {...} }` | Retrieves the score for an ongoing game. |
 
 ### Admin
-| Metode | Endpoint | Request Body | Response | Beskrivelse |
+| Method | Endpoint | Request Body | Response | Description |
 |--------|---------|--------------|----------|-------------|
-| `PUT` MANGLER | `/api/admin/question` | `{ "question": "Hvad står HTML for?", "rightAnswer": "HyperText Markup Language", "wrongAnswers": ["High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], "category": "web development", "difficulty": "medium" }` | `{ "questionId": 25, "msg": "Question created successfully" }` | Opretter et nyt spørgsmål. |
-| `PATCH` MANGLER | `/api/admin/question/{questionId}` | `{ "question": "Updated question?", "rightAnswer": "Updated answer" }` | `{ "msg": "Question updated successfully" }` | Opdaterer et spørgsmål. |
-| `DELETE` MANGLER | `/api/admin/question/{questionId}` | | `{ "msg": "Question deleted successfully" }` | Sletter et spørgsmål. |
+| `PUT` MISSING | `/api/admin/question` | `{ "question": "What does HTML stand for?", "rightAnswer": "HyperText Markup Language", "wrongAnswers": ["High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], "category": "web development", "difficulty": "medium" }` | `{ "questionId": 25, "msg": "Question created successfully" }` | Creates a new question. |
+| `PATCH` MISSING | `/api/admin/question/{questionId}` | `{ "question": "Updated question?", "rightAnswer": "Updated answer" }` | `{ "msg": "Question updated successfully" }` | Updates a question. |
+| `DELETE` MISSING | `/api/admin/question/{questionId}` | | `{ "msg": "Question deleted successfully" }` | Deletes a question. |
 
-### Autentifikation
-| Metode | Endpoint | Request Body | Response | Beskrivelse |
+### Authentication
+| Method | Endpoint | Request Body | Response | Description |
 |--------|---------|--------------|----------|-------------|
-| `POST` | `/auth/register` | `{ "username": "Jim", "password": "1234" }` | `200` | Registrerer en ny bruger. |
-| `POST` | `/auth/login` | `{ "username": "Jim", "password": "1234" }` | `200` | Logger brugeren ind. |
+| `POST` | `/auth/register` | `{ "username": "Jim", "password": "1234" }` | `200` | Registers a new user. |
+| `POST` | `/auth/login` | `{ "username": "Jim", "password": "1234" }` | `200` | Logs in the user. |
 
-## Fejlhåndtering
-Alle fejl returneres i følgende format:
+## Error Handling
+All errors are returned in the following format:
 ```json
-{ "status": statusCode, "msg": "Beskrivelse af fejlen" }
+{ "status": statusCode, "msg": "Description of the error" }
 ```
-| Fejlkode | Beskrivelse |
+| Error Code | Description |
 |----------|-------------|
-| `400` | Ugyldig anmodning (manglende felt osv.). |
-| `404` | Ressource ikke fundet (spil, spørgsmål osv.). |
+| `400` | Invalid request (missing field, etc.). |
+| `404` | Resource not found (game, question, etc.). |
 
-## Request Body Eksempler
-### Spilformat
+## Request Body Examples
+### Game Format
 ```json
 {
   "players": {
@@ -69,7 +69,7 @@ Alle fejl returneres i følgende format:
   }
 }
 ```
-### Spillerformat
+### Player Format
 ```json
 {
   "players": [
@@ -79,12 +79,11 @@ Alle fejl returneres i følgende format:
 }
 ```
 
-## Kontakt
-Har du spørgsmål eller feedback, kan du oprette en issue på [GitHub](https://github.com/mrPrimeBeef/TheQuizzAPI/issues).
+## Contact
+If you have any questions or feedback, you can create an issue on [GitHub](https://github.com/mrPrimeBeef/TheQuizzAPI/issues).
 
+The project retrieves quizzes from:
 
-projektet henter quizzes fra 
+- [QuizAPI.io](https://quizapi.io/categories)
+- [Open Trivia Database](https://opentdb.com/api_config.php)
 
-https://quizapi.io/categories
-og
-https://opentdb.com/api_config.php
