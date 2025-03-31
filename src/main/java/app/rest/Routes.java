@@ -141,8 +141,8 @@ public class Routes {
             }, Role.ADMIN);
 
             put("/question", ctx -> {
-                QuestionDTO q = adminController.createQuestion(ctx);
-                ctx.status(200).result("The question is in the database: " + q);
+                int id = adminController.createQuestion(ctx);
+                ctx.status(200).result("Question with id" + id + "created successfully");
             });
 
             //TODO check functionality

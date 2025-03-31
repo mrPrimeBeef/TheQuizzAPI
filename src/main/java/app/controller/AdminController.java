@@ -35,17 +35,12 @@ public class AdminController {
         Populate.usersAndRoles(securityDAO);
     }
 
-    public QuestionDTO createQuestion(Context ctx) {
+    public Integer createQuestion(Context ctx) {
         Question question = ctx.bodyAsClass(Question.class);
 
         Question q = questionDao.create(question);
 
-        List<QuestionBody> newQuestion = new ArrayList<>();
-        newQuestion.add(new QuestionBody(q.getDifficulty().toString(), q.getCategory(), q.getDescription(), q.getRightAnswer(), q.getWrongAnswers()));
-
-        QuestionDTO questionDTO = new QuestionDTO(newQuestion);
-
-        return questionDTO;
+        return q.getId();
     }
 
     public void deleteQuestion(Context ctx) {
