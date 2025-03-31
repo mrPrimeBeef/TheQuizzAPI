@@ -75,7 +75,6 @@ public class SecurityController implements ISecurityController {
             ctx.status(HttpStatus.CREATED).json(returnJson);
         } catch (EntityExistsException e) {
             logger.error("Error registering user", e);
-            //throw new APIException(422, "Could not register user: User already exists", e);
             ctx.status(HttpStatus.UNPROCESSABLE_CONTENT).json("User already exists " + e.getMessage());
         }
     }
@@ -98,13 +97,11 @@ public class SecurityController implements ISecurityController {
         UserDTO verifiedTokenUser = getUserFromToken(ctx);
         if (verifiedTokenUser == null) {
             throw new UnauthorizedResponse("Invalid user or token"); // UnauthorizedResponse is javalin 6 specific but response is not json!
-//            throw new app.exceptions.APIException(401, "Invalid user or token");
         }
         ctx.attribute("user", verifiedTokenUser);
 
         if (!userHasAllowedRole(verifiedTokenUser, permittedRoles)) {
             throw new ForbiddenResponse("User does not have the required role to access this endpoint");
-            // throw new APIException(403, "User does not have the required role to access this endpoint");
         }
     }
 

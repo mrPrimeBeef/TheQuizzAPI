@@ -71,6 +71,15 @@ public class Routes {
                     handleGetException(ctx, e);
                 }
             }, Role.USER, Role.ADMIN);
+
+            //TODO implement answering question
+            post("/{gameid}/answer", (ctx) -> {
+                try {
+                    ctx.status(201);
+                } catch (Exception e) {
+                    handlePostException(ctx, e);
+                }
+            }, Role.ADMIN, Role.USER);
         };
     }
 
@@ -113,10 +122,10 @@ public class Routes {
             get("populate", (ctx) -> {
                 try {
                     try {
-                        gameController.populateDatabaseRoles(ctx);
+                        gameController.populateDatabaseRoles();
                     } catch (Exception e) {
                     } finally {
-                        gameController.populateDatabaseWithScienceComputersQuestions(ctx);
+                        gameController.populateDatabaseWithScienceComputersQuestions();
                         ctx.status(200).result("Database now got data in it");
                     }
                     ctx.status(200);
