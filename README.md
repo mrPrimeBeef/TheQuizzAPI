@@ -8,9 +8,6 @@ Det er designet til at man bruger en enhed(mobil/computer) til quizzen, og ikke 
 
 Når proof of concept er færdigt, vil der blive tilføjet flere kategorier.
 
-## Repositories
-GitHub Repository: [TheQuizzAPI](https://github.com/mrPrimeBeef/TheQuizzAPI)
-
 ## Base URL
 API’et kan tilgås på: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api/routes)
 
