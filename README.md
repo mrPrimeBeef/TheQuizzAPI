@@ -25,9 +25,9 @@ API’et kan tilgås på: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/
 ### Admin
 | Metode | Endpoint | Request Body | Response | Beskrivelse |
 |--------|---------|--------------|----------|-------------|
-| `PUT` | `/api/admin/question` | `{ "question": "Hvad står HTML for?", "rightAnswer": "HyperText Markup Language", "wrongAnswers": ["High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], "category": "web development", "difficulty": "medium" }` | `{ "questionId": 25, "msg": "Question created successfully" }` | Opretter et nyt spørgsmål. |
-| `PATCH` | `/api/admin/question/{questionId}` | `{ "question": "Updated question?", "rightAnswer": "Updated answer" }` | `{ "msg": "Question updated successfully" }` | Opdaterer et spørgsmål. |
-| `DELETE` | `/api/admin/question/{questionId}` | | `{ "msg": "Question deleted successfully" }` | Sletter et spørgsmål. |
+| `PUT` MANGLER | `/api/admin/question` | `{ "question": "Hvad står HTML for?", "rightAnswer": "HyperText Markup Language", "wrongAnswers": ["High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], "category": "web development", "difficulty": "medium" }` | `{ "questionId": 25, "msg": "Question created successfully" }` | Opretter et nyt spørgsmål. |
+| `PATCH` MANGLER | `/api/admin/question/{questionId}` | `{ "question": "Updated question?", "rightAnswer": "Updated answer" }` | `{ "msg": "Question updated successfully" }` | Opdaterer et spørgsmål. |
+| `DELETE` MANGLER | `/api/admin/question/{questionId}` | | `{ "msg": "Question deleted successfully" }` | Sletter et spørgsmål. |
 
 ### Autentifikation
 | Metode | Endpoint | Request Body | Response | Beskrivelse |
