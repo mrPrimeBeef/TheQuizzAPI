@@ -1,0 +1,37 @@
+**Tech Stack for theQuizz**
+
+### **Backend:**
+- **Java 17** – Programming language
+- **Javalin 6.4.0** – Web framework for REST APIs
+- **Hibernate 6.6.6** – ORM (Object-Relational Mapping) for database management
+- **Jackson 2.16.0** – JSON serialization and deserialization
+
+### **Database:**
+- **PostgreSQL 42.7.5** – Database
+- **Testcontainers** – Used for integration testing with PostgreSQL
+
+### **Security:**
+- **JWT TokenSecurity 1.0.2** – JWT token management
+- **jBCrypt 0.4** – Password hashing with BCrypt
+
+### **Logging:**
+- **SLF4J 2.0.16** – Logging framework
+- **Logback 1.5.7** – SLF4J implementation for logging
+
+### **Testing & Quality Assurance:**
+- **JUnit 5.11.4** – Unit testing
+- **Hamcrest 3.0** – Matcher framework for tests
+- **Rest-Assured 5.5.0** – API integration testing
+- **Testcontainers 1.20.4** – Database integration testing
+
+### **Build & Deployment:**
+- **Maven** – Build management
+- **Maven Shade Plugin** – Generates a "fat JAR" for deployment
+- **Maven Surefire Plugin** – Runs tests during the build process
+- **Docker Desktop (version 4.34.1)** - Containerization Software
+- ** Caddy** - webserver(redirect to get https)
+
+### **Utility & Annotation Processing:**
+- **Lombok 1.18.36** – Reduces boilerplate code
+
+This tech stack ensures a well-structured, secure, and testable RESTful web application.
