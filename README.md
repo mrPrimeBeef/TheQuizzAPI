@@ -26,9 +26,9 @@ Routes: [quizzapi.sem2.dk/api/routes](http://quizzapi.sem2.dk/api/routes)
 ### Admin
 | Method | Endpoint | Request Body | Response | Description |
 |--------|---------|--------------|----------|-------------|
-| `PUT` MISSING | `/api/admin/question` | `{ "question": "What does HTML stand for?", "rightAnswer": "HyperText Markup Language", "wrongAnswers": ["High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], "category": "web development", "difficulty": "medium" }` | `{ "questionId": 25, "msg": "Question created successfully" }` | Creates a new question. |
-| `PATCH` MISSING | `/api/admin/question/{questionId}` | `{ "question": "Updated question?", "rightAnswer": "Updated answer" }` | `{ "msg": "Question updated successfully" }` | Updates a question. |
-| `DELETE` MISSING | `/api/admin/question/{questionId}` | | `{ "msg": "Question deleted successfully" }` | Deletes a question. |
+| `PUT` MISSING | `/api/admin/question` | `{ "question": "What does HTML stand for?", "rightAnswer": "HyperText Markup Language", "wrongAnswers": ["High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], "category": "web development", "difficulty": "medium" }` | `{ "msg": "Question with id created successfully" }` | Creates a new question. |
+| `PATCH` MISSING | `/api/admin/question/{questionId}` | `??` | `{ "msg": "Question updated successfully" }` | Updates a question. |
+| `DELETE` MISSING | `/api/admin/question/{questionId}` | | `{ "msg": "Question is now gone" }` | Deletes a question. |
 
 ### Authentication
 | Method | Endpoint | Request Body | Response | Description |
