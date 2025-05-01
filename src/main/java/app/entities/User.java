@@ -14,7 +14,6 @@ import org.mindrot.jbcrypt.BCrypt;
 @Table(name = "users")
 @NamedQueries(@NamedQuery(name = "User.deleteAll", query = "DELETE FROM User"))
 public class User implements ISecurityUser {
-
     @Id
     @Column(unique = true)
     private String username;
