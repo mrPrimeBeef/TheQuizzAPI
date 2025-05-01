@@ -111,7 +111,7 @@ public class Routes {
             post("/register", (ctx) -> {
                 try {
                     securityController.register(ctx);
-                    ctx.status(200);
+                    ctx.status(201);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
@@ -153,6 +153,7 @@ public class Routes {
         };
     }
 
+    // TODO Rewrite to use javalin exception handling
     private void handlePostException(Context ctx, Exception e) {
         ctx.status(400).json(Map.of("status", 400, "msg", "Ugyldig anmodning (f.eks. manglende felt)"));
     }
