@@ -59,7 +59,7 @@ public class GameControllerTest {
                 .handleException()
                 .checkSecurityRoles()
                 .startServer(7080);
-        RestAssured.baseURI = "http://localhost:7079/api";
+        RestAssured.baseURI = "http://localhost:7080/api";
 
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
