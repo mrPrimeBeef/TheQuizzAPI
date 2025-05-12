@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.bugelhartmann.UserDTO;
 
 import static io.restassured.RestAssured.given;
+
 import io.restassured.RestAssured;
 
 import app.config.ApplicationConfig;
@@ -51,7 +52,6 @@ public class GameControllerTest {
             throw new RuntimeException("Could not find an available port", e);
         }
     }
-
 
     @BeforeAll
     static void setUpAll() {

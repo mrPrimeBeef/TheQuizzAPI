@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SecurityControllerTest {
 
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
-    private final Logger logger = LoggerFactory.getLogger(SecurityControllerTest.class.getName());
+    //    private final Logger logger = LoggerFactory.getLogger(SecurityControllerTest.class.getName());
     private final String TEST_USER = "testuser";
     private final String TEST_PASSWORD = "password123";
     private final String TEST_ADMIN = "testadmin";
@@ -202,7 +202,7 @@ class SecurityControllerTest {
                     .post("/auth/register");
         } catch (Exception e) {
             // Ignore any exceptions - we expect this to fail
-            logger.info("Expected exception: {}", e.getMessage());
+//            logger.info("Expected exception: {}", e.getMessage());
         }
 
         // Count users after the test
