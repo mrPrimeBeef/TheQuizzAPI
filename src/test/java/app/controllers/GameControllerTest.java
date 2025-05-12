@@ -1,5 +1,7 @@
 package app.controllers;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +41,22 @@ public class GameControllerTest {
     private ObjectMapper objectMapper = new ObjectMapper();
     private String adminToken;
 
+    private static int serverPort;
+
+    // Method to find an available port
+    private static int findAvailablePort() {
+        try (ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not find an available port", e);
+        }
+    }
+
+
     @BeforeAll
     static void setUpAll() {
+        serverPort = findAvailablePort();
+
         RoleDao roleDao = RoleDao.getInstance(emf);
         GameDao gameDao = GameDao.getInstance(emf);
         PlayerDao playerDao = PlayerDao.getInstance(emf);
@@ -58,8 +74,8 @@ public class GameControllerTest {
                 .setRoute(routes.getRoutes())
                 .handleException()
                 .checkSecurityRoles()
-                .startServer(7080);
-        RestAssured.baseURI = "http://localhost:7080/api";
+                .startServer(serverPort);
+        RestAssured.baseURI = "http://localhost:" + serverPort + "/api";
 
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();

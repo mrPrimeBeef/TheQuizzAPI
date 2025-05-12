@@ -22,6 +22,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,8 +42,21 @@ class SecurityControllerTest {
     private final Role userRole = new Role("USER");
     private final Role adminRole = new Role("ADMIN");
 
+    private static int serverPort;
+
+    // Method to find an available port
+    private static int findAvailablePort() {
+        try (ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not find an available port", e);
+        }
+    }
+
     @BeforeAll
     static void setUpAll() {
+        serverPort = findAvailablePort();
+
         RoleDao roleDao = RoleDao.getInstance(emf);
         GameDao gameDao = GameDao.getInstance(emf);
         PlayerDao playerDao = PlayerDao.getInstance(emf);
@@ -59,8 +74,8 @@ class SecurityControllerTest {
                 .setRoute(routes.getRoutes())
                 .handleException()
                 .checkSecurityRoles()
-                .startServer(7079);
-        RestAssured.baseURI = "http://localhost:7079/api";
+                .startServer(serverPort);
+        RestAssured.baseURI = "http://localhost:" + serverPort + "/api";
     }
 
     @BeforeEach
