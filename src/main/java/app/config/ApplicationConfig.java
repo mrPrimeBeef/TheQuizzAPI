@@ -36,6 +36,10 @@ public class ApplicationConfig {
             config.bundledPlugins.enableDevLogging();
             config.showJavalinBanner = true;
         });
+
+        app.before(ApplicationConfig::corsHeaders);
+        app.options("/*", ApplicationConfig::corsHeadersOptions);
+
         return applicationConfig;
     }
 
@@ -71,6 +75,22 @@ public class ApplicationConfig {
     public ApplicationConfig startServer(int port) {
         app.start(port);
         return applicationConfig;
+    }
+
+    //TODO Kig på en bedre måde at gøre dette
+    private static void corsHeaders(Context ctx) {
+        ctx.header("Access-Control-Allow-Origin", "*");
+        ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        ctx.header("Access-Control-Allow-Credentials", "true");
+    }
+
+    private static void corsHeadersOptions(Context ctx) {
+        ctx.header("Access-Control-Allow-Origin", "*");
+        ctx.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        ctx.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        ctx.header("Access-Control-Allow-Credentials", "true");
+        ctx.status(204);
     }
 
     public static void stopServer() {
