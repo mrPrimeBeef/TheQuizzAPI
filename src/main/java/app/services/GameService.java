@@ -31,7 +31,7 @@ public class GameService {
                 .map(playerNameAndPoints -> {
                     Player player = new Player();
                     player.setName(playerNameAndPoints.name());
-                    player.setPoints(playerNameAndPoints.points());
+                    player.setPoints(0);
                     player.setGame(gameDao.findById(gameId));
                     return playerDao.create(player);
                 })
