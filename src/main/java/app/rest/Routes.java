@@ -42,7 +42,7 @@ public class Routes {
             post("/{number}", (ctx) -> {
                 try {
                     Integer gameId = gameController.getNumberOfPlayers(ctx);
-                    ctx.status(201);
+                    ctx.status(201).json(gameId);
                 } catch (Exception e) {
                     handlePostException(ctx, e);
                 }
