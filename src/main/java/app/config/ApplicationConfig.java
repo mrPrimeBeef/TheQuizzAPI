@@ -37,8 +37,8 @@ public class ApplicationConfig {
             config.showJavalinBanner = true;
         });
 
-        app.before(ApplicationConfig::corsHeaders);
-        app.options("/*", ApplicationConfig::corsHeadersOptions);
+//        app.before(ApplicationConfig::corsHeaders);
+//        app.options("/*", ApplicationConfig::corsHeadersOptions);
 
         return applicationConfig;
     }
