@@ -33,8 +33,9 @@ public class GameController {
     }
 
     public GameDTO makeGame(Context ctx) {
+        GameRequestDTO gameRequest = ctx.bodyAsClass(GameRequestDTO.class);
         try {
-            List<Question> filteredQuestions = validatInputAndReturnFilteredQuestions(ctx);
+            List<Question> filteredQuestions = validatInputAndReturnFilteredQuestions(gameRequest);
 
             Integer gameid = Integer.parseInt(ctx.pathParam("gameid"));
             List<Player> players = playerDao.findAllPlayersByGameId(gameid);
@@ -65,41 +66,36 @@ public class GameController {
         return new GameDTO(playerNamesDTO, questionDTO);
     }
 
-    private @NotNull List<Question> validatInputAndReturnFilteredQuestions(Context ctx) throws ValidationException {
-        String limitStr = ctx.queryParam("limit");
-
+    private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {
         List<Question> questions = questionDao.findAll();
 
-        String category = URLDecoder.decode(ctx.queryParam("category"), StandardCharsets.UTF_8);
-
+        String category = gameRequest.getCategory();
         List<String> uniqueCategories = questions.stream()
                 .map(Question::getCategory)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         if (category == null || !uniqueCategories.contains(category)) {
-            throw new ValidationException("From makeGame(), cannot make a game with the category " + category);
+            throw new ValidationException("Invalid category: " + category);
         }
 
-        //TODO hardcoded values change if more than 3 difficulites
-        String difficulty = ctx.queryParam("difficulty");
+        String difficulty = gameRequest.getDifficulty();
         if (difficulty != null &&
                 (!difficulty.equals("EASY") &&
                         !difficulty.equals("MEDIUM") &&
                         !difficulty.equals("HARD"))) {
-            throw new ValidationException("From makeGame(), cannot make a game with the difficulty " + difficulty);
+            throw new ValidationException("Invalid difficulty: " + difficulty);
         }
 
-        int limit = limitStr != null ? Integer.parseInt(limitStr) : 10;
+        int limit = gameRequest.getLimit();
         if (limit < 0 || limit > 50) {
-            throw new ValidationException("From makeGame(), cannot make a game with the question size " + limit + ". Atleast 10 questions and maxium 50");
+            throw new ValidationException("Invalid question limit: " + limit);
         }
 
-        List<Question> filteredQuestions = questions.stream()
+        return questions.stream()
                 .filter(question -> question.getDifficulty().name().equals(difficulty))
                 .limit(limit)
-                .collect(Collectors.toList());
-        return filteredQuestions;
+                .toList();
     }
 
     public Integer getNumberOfPlayers(Context ctx) {

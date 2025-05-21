@@ -53,7 +53,7 @@ public class Routes {
 
             }, Role.ADMIN, Role.USER);
 
-            get("/{gameid}/questions", (ctx) -> {
+            post("/{gameid}/questions", (ctx) -> {
                 GameDTO gameDTO = gameController.makeGame(ctx);
                 ctx.status(201).json(gameDTO);
             }, Role.ADMIN, Role.USER);
