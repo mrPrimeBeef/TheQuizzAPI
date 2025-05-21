@@ -40,50 +40,35 @@ public class Routes {
     private EndpointGroup protectedGameRoutes() {
         return () -> {
             post("/{number}", (ctx) -> {
-                try {
-                    Integer gameId = gameController.getNumberOfPlayers(ctx);
-                    ctx.status(201).json(gameId);
-                } catch (Exception e) {
-                    handlePostException(ctx, e);
-                }
+
+                Integer gameId = gameController.getNumberOfPlayers(ctx);
+                ctx.status(201).json(gameId);
+
             }, Role.ADMIN, Role.USER);
 
             post("/{gameid}/players/names", (ctx) -> {
-                try {
-                    PlayerNamesDTO players = gameController.createPlayers(ctx);
-                    ctx.status(201).json(players);
-                } catch (Exception e) {
-                    handlePostException(ctx, e);
-                }
+
+                PlayerNamesDTO players = gameController.createPlayers(ctx);
+                ctx.status(201).json(players);
+
             }, Role.ADMIN, Role.USER);
 
             get("/{gameid}/questions", (ctx) -> {
-                try {
-                    GameDTO gameDTO = gameController.makeGame(ctx);
-                    ctx.status(201).json(gameDTO);
-                } catch (Exception e) {
-                    handleGetException(ctx, e);
-                }
+                GameDTO gameDTO = gameController.makeGame(ctx);
+                ctx.status(201).json(gameDTO);
             }, Role.ADMIN, Role.USER);
 
             get("/{gameid}/score", (ctx) -> {
-                try {
-                    PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
-                    ctx.status(200).json(playerNamesDTO);
-                } catch (Exception e) {
-                    handleGetException(ctx, e);
-                }
+
+                PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
+                ctx.status(200).json(playerNamesDTO);
             }, Role.USER, Role.ADMIN);
 
             //TODO check functionality
             post("/{playerid}/{questionid}/answer", (ctx) -> {
-                try {
-                    gameController.updateScore(ctx);
-                    PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
-                    ctx.status(200).json(playerNamesDTO);
-                } catch (Exception e) {
-                    handlePostException(ctx, e);
-                }
+                gameController.updateScore(ctx);
+                PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
+                ctx.status(200).json(playerNamesDTO);
             }, Role.ADMIN, Role.USER);
         };
     }
@@ -91,30 +76,21 @@ public class Routes {
     private EndpointGroup authRoutes() {
         return () -> {
             get("/test", ctx -> {
-                try {
-                    QuestionBody questionBody = gameController.getOneQuestion();
-                    ctx.status(200).json(questionBody);
-                } catch (Exception e) {
-                    handleGetException(ctx, e);
-                }
+                QuestionBody questionBody = gameController.getOneQuestion();
+                ctx.status(200).json(questionBody);
+
             }, Role.ANYONE);
 
             get("/healthcheck", securityController::healthCheck, Role.ANYONE);
             post("/login", (ctx) -> {
-                try {
-                    securityController.login(ctx);
-                    ctx.status(200);
-                } catch (Exception e) {
-                    handlePostException(ctx, e);
-                }
+                securityController.login(ctx);
+                ctx.status(200);
+
             }, Role.ANYONE);
             post("/register", (ctx) -> {
-                try {
-                    securityController.register(ctx);
-                    ctx.status(201);
-                } catch (Exception e) {
-                    handlePostException(ctx, e);
-                }
+
+                securityController.register(ctx);
+                ctx.status(201);
             }, Role.ANYONE);
         };
     }
@@ -135,7 +111,6 @@ public class Routes {
                     }
                     ctx.status(200);
                 } catch (Exception e) {
-                    handlePostException(ctx, e);
                 }
             }, Role.ADMIN);
 
@@ -151,14 +126,5 @@ public class Routes {
             });
 
         };
-    }
-
-    // TODO Rewrite to use javalin exception handling
-    private void handlePostException(Context ctx, Exception e) {
-        ctx.status(400).json(Map.of("status", 400, "msg", "Ugyldig anmodning (f.eks. manglende felt)"));
-    }
-
-    private void handleGetException(Context ctx, Exception e) {
-        ctx.status(404).json(Map.of("status", 404, "msg", "Ressource ikke fundet (spil, spørgsmål osv.)"));
     }
 }

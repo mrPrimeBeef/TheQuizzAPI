@@ -9,6 +9,7 @@ import io.javalin.http.Context;
 
 import app.controller.ISecurityController;
 import app.controller.SecurityController;
+import io.javalin.validation.ValidationException;
 
 public class ApplicationConfig {
     private static ApplicationConfig applicationConfig;
@@ -53,8 +54,16 @@ public class ApplicationConfig {
             handleError(ctx, 400, "Invalid input: " + e.getMessage());
         });
 
+        app.exception(ValidationException.class, (e, ctx) -> {
+            handleError(ctx, 400, "Validation error: " + e.getMessage());
+        });
+
         app.exception(Exception.class, (e, ctx) -> {
             handleError(ctx, 500, "Something went wrong: " + e.getMessage());
+        });
+
+        app.error(404, ctx -> {
+            handleError(ctx, 404, "Resource not found");
         });
 
         return this;
