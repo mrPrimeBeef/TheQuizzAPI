@@ -32,7 +32,7 @@ public class GameController {
         this.gameDao = GameDao.getInstance(emf);
     }
 
-    public GameDTO makeGame(Context ctx) {
+    public GameDTO makeGame(Context ctx) throws ValidationException {
         GameRequestDTO gameRequest = ctx.bodyAsClass(GameRequestDTO.class);
         try {
             List<Question> filteredQuestions = validatInputAndReturnFilteredQuestions(gameRequest);
@@ -43,12 +43,10 @@ public class GameController {
 
             gameService.createGame(players, filteredQuestions, activeGame);
 
-            // this is to send DTO of the game
             return getGameDTO(players, filteredQuestions);
         } catch (Exception e) {
-
+            throw new ValidationException("Error creating game: " + e.getMessage());
         }
-        return null;
     }
 
     private static @NotNull GameDTO getGameDTO(List<Player> players, List<Question> filteredQuestions) {

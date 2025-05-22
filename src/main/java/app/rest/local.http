@@ -17,6 +17,9 @@ Content-Type: application/json
   "username": "Jim",
   "password": "1234"
 }
+> {%
+    client.global.set("token", response.body.token);
+%}
 ###
 
 POST http://localhost:7070/api/auth/login
@@ -40,7 +43,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-POST http://localhost:7070/api/game/2/players/names
+POST http://localhost:7070/api/game/6/players/names
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -51,8 +54,15 @@ Content-Type: application/json
   ]
 }
 ###
-GET http://localhost:7070/api/game/2/questions?limit=10&category=Science: Computers&difficulty=EASY
+POST http://localhost:7070/api/game/6/questions
 Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 10,
+  "category": "Science: Computers",
+  "difficulty": "EASY"
+}
 
 ###
 GET http://localhost:7070/api/game/1/score

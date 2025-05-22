@@ -56,7 +56,7 @@ Content-Type: application/json
 
 {
   "limit": 10,
-  "category": "Science:Computers",
+  "category": "Science: Computers",
   "difficulty": "EASY"
 }
 

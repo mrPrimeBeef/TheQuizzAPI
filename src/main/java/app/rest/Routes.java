@@ -44,19 +44,19 @@ public class Routes {
                 Integer gameId = gameController.getNumberOfPlayers(ctx);
                 ctx.status(201).json(gameId);
 
-            }, Role.ADMIN, Role.USER);
+            }, Role.USER, Role.ADMIN);
 
             post("/{gameid}/players/names", (ctx) -> {
 
                 PlayerNamesDTO players = gameController.createPlayers(ctx);
                 ctx.status(201).json(players);
 
-            }, Role.ADMIN, Role.USER);
+            }, Role.USER, Role.ADMIN);
 
             post("/{gameid}/questions", (ctx) -> {
                 GameDTO gameDTO = gameController.makeGame(ctx);
                 ctx.status(201).json(gameDTO);
-            }, Role.ADMIN, Role.USER);
+            }, Role.USER, Role.ADMIN);
 
             get("/{gameid}/score", (ctx) -> {
 
