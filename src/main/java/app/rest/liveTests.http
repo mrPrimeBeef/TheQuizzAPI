@@ -50,8 +50,15 @@ Content-Type: application/json
   ]
 }
 ###
-GET https://thequizzapi.sem2.dk/api/game/1/questions?limit=10&category=Science:Computers&difficulty=EASY
+POST https://thequizzapi.sem2.dk/api/game/1/questions
 Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 10,
+  "category": "Science:Computers",
+  "difficulty": "EASY"
+}
 
 ###
 GET https://thequizzapi.sem2.dk/api/game/1/score
