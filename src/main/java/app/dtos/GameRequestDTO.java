@@ -10,6 +10,4 @@ public class GameRequestDTO {
     private int limit;
     private String category;
     private String difficulty;
-    private String gameMode;
-
 }
