@@ -61,7 +61,7 @@ public class GameController {
                 .toList();
         QuestionDTO questionDTO = new QuestionDTO(questionBodyList);
 
-        return new GameDTO(playerNamesDTO, questionDTO);
+        return new GameDTO(playerNamesDTO, questionDTO, 0);
     }
 
     private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {
@@ -120,13 +120,14 @@ public class GameController {
         return scoresAndNames;
     }
 
-    //TODO test score param if it works
-    public void updateScore(Context ctx) {
-        String answer = ctx.body();
+    public GameDTO saveGame(Context ctx) {
+        Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
+        Integer turn = Integer.parseInt(ctx.pathParam("turn"));
 
-        Question question = questionDao.findById(ctx.pathParam("questionid"));
-        Player player = playerDao.findById(ctx.pathParam("playerid"));
+        GameDTO updatedGame = ctx.bodyAsClass(GameDTO.class);
 
-        gameService.updateScore(player, question, answer);
+        GameDTO gameDTO = gameService.updateGame(gameId, turn, updatedGame);
+
+        return gameDTO;
     }
 }

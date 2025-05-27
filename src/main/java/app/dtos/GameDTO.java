@@ -1,4 +1,4 @@
 package app.dtos;
 
-public record GameDTO(PlayerNamesDTO players, QuestionDTO questions) {
+public record GameDTO(PlayerNamesDTO players, QuestionDTO questions, int turn) {
 }

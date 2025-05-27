@@ -4,6 +4,7 @@ import java.util.List;
 
 import app.daos.GameDao;
 import app.daos.PlayerDao;
+import app.dtos.GameDTO;
 import app.dtos.PlayerNameAndPoints;
 import app.dtos.PlayerNamesDTO;
 import app.entities.Game;
@@ -45,35 +46,30 @@ public class GameService {
         return game.getId();
     }
 
-    public void updateScore(Player player, Question question, String answer){
-        int playerpoints;
-
-        if (answer.equals(question.getRightAnswer())) {
-            switch (question.getDifficulty()) {
-                case EASY:
-                    playerpoints = player.getPoints() + 10;
-                    player.setPoints(playerpoints);
-                    playerDao.update(player);
-                    break;
-                case MEDIUM:
-                    playerpoints = player.getPoints() + 15;
-                    player.setPoints(playerpoints);
-                    playerDao.update(player);
-                    break;
-                case HARD:
-                    playerpoints = player.getPoints() + 20;
-                    player.setPoints(playerpoints);
-                    playerDao.update(player);
-                    break;
-                default:
-                    // Add logic for default case here
-                    break;
-            }
-        }
-    }
 
     public PlayerNamesDTO getScores(Integer gameId) {
         List<Player> players = playerDao.findAllPlayersByGameId(gameId);
         return PlayerNamesDTO.convertFromEntityToDTO(players);
+    }
+
+    public GameDTO updateGame(Integer gameId, Integer turn, GameDTO updatedGame) {
+        Game game = gameDao.findById(gameId);
+
+        game.getPlayers().forEach(player -> {
+            updatedGame.players().players().stream()
+                    .filter(updatedPlayer -> updatedPlayer.name().equals(player.getName()))
+                    .findFirst()
+                    .ifPresent(updatedPlayer -> player.setPoints(updatedPlayer.points()));
+        });
+
+        game.setTurn(turn);
+
+        gameDao.update(game);
+
+        return new GameDTO(
+                PlayerNamesDTO.convertFromEntityToDTO(game.getPlayers()),
+                updatedGame.questions(),
+                game.getTurn()
+        );
     }
 }

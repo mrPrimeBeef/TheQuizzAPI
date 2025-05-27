@@ -1,10 +1,7 @@
 package app.rest;
 
-import java.util.Map;
-
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-import io.javalin.http.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.apibuilder.EndpointGroup;
 
@@ -47,10 +44,8 @@ public class Routes {
             }, Role.USER, Role.ADMIN);
 
             post("/{gameid}/players/names", (ctx) -> {
-
                 PlayerNamesDTO players = gameController.createPlayers(ctx);
                 ctx.status(201).json(players);
-
             }, Role.USER, Role.ADMIN);
 
             post("/{gameid}/questions", (ctx) -> {
@@ -59,16 +54,17 @@ public class Routes {
             }, Role.USER, Role.ADMIN);
 
             get("/{gameid}/score", (ctx) -> {
-
                 PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
                 ctx.status(200).json(playerNamesDTO);
             }, Role.USER, Role.ADMIN);
 
-            //TODO check functionality
-            post("/{playerid}/{questionid}/answer", (ctx) -> {
-                gameController.updateScore(ctx);
-                PlayerNamesDTO playerNamesDTO = gameController.getScore(ctx);
-                ctx.status(200).json(playerNamesDTO);
+            post("/postgame/{gameid}/{turn}", (ctx) -> {
+                GameDTO gameDTO = gameController.saveGame(ctx);
+                ctx.status(201).json(gameDTO);
+            }, Role.ADMIN, Role.USER);
+
+            get("/postgame/{gameid}", (ctx) -> {
+
             }, Role.ADMIN, Role.USER);
         };
     }
