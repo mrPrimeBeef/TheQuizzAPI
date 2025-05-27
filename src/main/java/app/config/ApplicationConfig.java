@@ -51,19 +51,20 @@ public class ApplicationConfig {
 
     public ApplicationConfig handleException() {
         app.exception(IllegalStateException.class, (e, ctx) -> {
-            handleError(ctx, 400, "Invalid input: " + e.getMessage());
+            handleError(ctx, 400, "Invalid input: " + e.getMessage() + ". Please check the request and try again.");
         });
 
         app.exception(ValidationException.class, (e, ctx) -> {
-            handleError(ctx, 400, "Validation error: " + e.getMessage());
-        });
-
-        app.exception(Exception.class, (e, ctx) -> {
-            handleError(ctx, 500, "Something went wrong: " + e.getMessage());
+            handleError(ctx, 400, "Validation error: " + e.getMessage() + ". Ensure all required fields are valid.");
         });
 
         app.error(404, ctx -> {
-            handleError(ctx, 404, "Resource not found");
+            handleError(ctx, 404, "Resource not found: " + ctx.path() + ". Check the URL and try again.");
+        });
+
+        app.exception(Exception.class, (e, ctx) -> {
+            handleError(ctx, 500, "Unexpected error: " + e.getClass().getSimpleName() + " - " + e.getMessage() +
+                    ". Please contact support if the issue persists.");
         });
 
         return this;

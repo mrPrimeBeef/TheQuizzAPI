@@ -58,12 +58,12 @@ public class Routes {
                 ctx.status(200).json(playerNamesDTO);
             }, Role.USER, Role.ADMIN);
 
-            post("/postgame/{gameid}/{turn}", (ctx) -> {
+            post("/savegame/{gameid}/{turn}", (ctx) -> {
                 GameDTO gameDTO = gameController.saveGame(ctx);
                 ctx.status(201).json(gameDTO);
             }, Role.ADMIN, Role.USER);
 
-            get("/postgame/{gameid}", (ctx) -> {
+            get("/savegame/{gameid}", (ctx) -> {
 
             }, Role.ADMIN, Role.USER);
         };

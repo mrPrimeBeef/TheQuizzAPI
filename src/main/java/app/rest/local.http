@@ -43,7 +43,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-POST http://localhost:7070/api/game/6/players/names
+POST http://localhost:7070/api/game/9/players/names
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -54,7 +54,7 @@ Content-Type: application/json
   ]
 }
 ###
-POST http://localhost:7070/api/game/6/questions
+POST http://localhost:7070/api/game/9/questions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -65,5 +65,132 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:7070/api/game/1/score
+POST http://localhost:7070/api/game/savegame/9/3
 Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "players": {
+    "players": [
+      {
+        "name": "Player1Game9",
+        "points": 1
+      },
+      {
+        "name": "Player2Game9",
+        "points": 2
+      },
+      {
+        "name": "Player3Game9",
+        "points": 3
+      }
+    ]
+  },
+  "questions": {
+    "results": [
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "A Mac is not a PC",
+        "correct_answer": "False",
+        "incorrect_answers": [
+          "True"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "Which programming language shares its name with an island in Indonesia?",
+        "correct_answer": "Java",
+        "incorrect_answers": [
+          "Python",
+          "C",
+          "Jakarta"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "The logo for Snapchat is a Bell.",
+        "correct_answer": "False",
+        "incorrect_answers": [
+          "True"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "&quot;HTML&quot; stands for Hypertext Markup Language.",
+        "correct_answer": "True",
+        "incorrect_answers": [
+          "False"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "What programming language was GitHub written in?",
+        "correct_answer": "Ruby",
+        "incorrect_answers": [
+          "JavaScript",
+          "Python",
+          "Lua"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "Time on Computers is measured via the EPOX System.",
+        "correct_answer": "False",
+        "incorrect_answers": [
+          "True"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "What is the domain name for the country Tuvalu?",
+        "correct_answer": ".tv",
+        "incorrect_answers": [
+          ".tu",
+          ".tt",
+          ".tl"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "In any programming language, what is the most common way to iterate through an array?",
+        "correct_answer": "&#039;For&#039; loops",
+        "incorrect_answers": [
+          "&#039;If&#039; Statements",
+          "&#039;Do-while&#039; loops",
+          "&#039;While&#039; loops"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "What is the name of Layer 7 of the OSI model?",
+        "correct_answer": "Application",
+        "incorrect_answers": [
+          "Session",
+          "Network",
+          "Present"
+        ]
+      },
+      {
+        "difficulty": "EASY",
+        "category": "Science: Computers",
+        "question": "What amount of bits commonly equals one byte?",
+        "correct_answer": "8",
+        "incorrect_answers": [
+          "1",
+          "2",
+          "64"
+        ]
+      }
+    ]
+  },
+  "turn": 3
+}

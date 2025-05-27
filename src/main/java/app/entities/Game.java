@@ -20,7 +20,7 @@ public class Game {
     @ManyToMany(mappedBy = "games")
     private List<User> users;
 
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;
 
     private Integer numberOfPlayers;
