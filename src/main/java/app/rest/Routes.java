@@ -59,12 +59,13 @@ public class Routes {
             }, Role.USER, Role.ADMIN);
 
             post("/savegame/{gameid}/{turn}", (ctx) -> {
-                GameDTO gameDTO = gameController.saveGame(ctx);
-                ctx.status(201).json(gameDTO);
+                GameDTO savedGameDTO = gameController.saveGame(ctx);
+                ctx.status(201).json(savedGameDTO);
             }, Role.ADMIN, Role.USER);
 
             get("/savegame/{gameid}", (ctx) -> {
-
+                GameDTO savedGameDTO = gameController.getSavedGame(ctx);
+                ctx.status(201).json(savedGameDTO);
             }, Role.ADMIN, Role.USER);
         };
     }

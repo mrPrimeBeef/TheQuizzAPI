@@ -130,4 +130,12 @@ public class GameController {
 
         return gameDTO;
     }
+
+    public GameDTO getSavedGame(Context ctx) {
+        Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
+
+        GameDTO savedGameDTO = gameService.getGame(gameId);
+
+        return savedGameDTO;
+    }
 }

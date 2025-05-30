@@ -4,9 +4,7 @@ import java.util.List;
 
 import app.daos.GameDao;
 import app.daos.PlayerDao;
-import app.dtos.GameDTO;
-import app.dtos.PlayerNameAndPoints;
-import app.dtos.PlayerNamesDTO;
+import app.dtos.*;
 import app.entities.Game;
 import app.entities.Player;
 import app.entities.Question;
@@ -63,13 +61,20 @@ public class GameService {
         });
 
         game.setTurn(turn);
-
         gameDao.update(game);
 
         return new GameDTO(
                 PlayerNamesDTO.convertFromEntityToDTO(game.getPlayers()),
                 updatedGame.questions(),
                 game.getTurn()
+        );
+    }
+
+    public GameDTO getGame(Integer gameId) {
+        Game savedGame = gameDao.findById(gameId);
+        return new GameDTO(PlayerNamesDTO.convertFromEntityToDTO(savedGame.getPlayers()),
+                QuestionDTO.convertFromEntityToDTO(savedGame.getQuestions()),
+                savedGame.getTurn()
         );
     }
 }
