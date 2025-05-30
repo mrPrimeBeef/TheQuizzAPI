@@ -4,18 +4,22 @@ import java.util.List;
 
 import app.daos.GameDao;
 import app.daos.PlayerDao;
+import app.daos.SecurityDAO;
 import app.dtos.*;
 import app.entities.Game;
 import app.entities.Player;
 import app.entities.Question;
+import app.entities.User;
 
 public class GameService {
     private final GameDao gameDao;
     private final PlayerDao playerDao;
+    private final SecurityDAO securityDAO;
 
-    public GameService(GameDao gameDao, PlayerDao playerDao) {
+    public GameService(GameDao gameDao, PlayerDao playerDao, SecurityDAO securityDAO) {
         this.gameDao = gameDao;
         this.playerDao = playerDao;
+        this.securityDAO = securityDAO;
     }
 
     public Game createGame(List<Player> players, List<Question> questions, Game activeGame) {
@@ -37,10 +41,15 @@ public class GameService {
                 .toList();
     }
 
-    public Integer createNumberOfPlayers(int numberOfPlayers) {
+    public Integer createNumberOfPlayers(int numberOfPlayers, String userName) {
         Game game = new Game();
         game.setNumberOfPlayers(numberOfPlayers);
         gameDao.create(game);
+
+        User user = securityDAO.findById(userName);
+        user.addGame(game);
+        securityDAO.update(user);
+
         return game.getId();
     }
 

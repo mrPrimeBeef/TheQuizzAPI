@@ -1,10 +1,9 @@
 package app.controller;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
+
+import app.utils.Utils;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -16,6 +15,9 @@ import app.entities.Question;
 import app.exceptions.ValidationException;
 import app.services.GameService;
 import org.jetbrains.annotations.NotNull;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 
 
 public class GameController {
@@ -98,7 +100,7 @@ public class GameController {
 
     public Integer getNumberOfPlayers(Context ctx) {
         String numberOfPlayers = ctx.pathParam("number");
-        return gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers));
+        return gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers), getUsernameFromJwt(ctx));
     }
 
     public PlayerNamesDTO createPlayers(Context ctx) {
@@ -137,5 +139,27 @@ public class GameController {
         GameDTO savedGameDTO = gameService.getGame(gameId);
 
         return savedGameDTO;
+    }
+
+    public static String getUsernameFromJwt(Context ctx) {
+        String token = ctx.header("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid or missing Authorization header");
+        }
+        String SECRET_KEY;
+
+        if (System.getenv("DEPLOYED") != null) {
+            SECRET_KEY = System.getenv("SECRET_KEY");
+        } else {
+            SECRET_KEY = Utils.getPropertyValue("SECRET_KEY", "config.properties");
+        }
+
+        token = token.substring(7); // Remove "Bearer " prefix
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject(); // Assuming the username is stored in the "sub" claim
     }
 }

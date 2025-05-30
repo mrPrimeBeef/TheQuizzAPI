@@ -1,6 +1,7 @@
 package app;
 
 import app.controller.AdminController;
+import app.daos.SecurityDAO;
 import jakarta.persistence.EntityManagerFactory;
 
 import app.config.ApplicationConfig;
@@ -20,7 +21,8 @@ public class Main {
         PlayerDao playerDao = PlayerDao.getInstance(emf);
         GameDao gameDao = GameDao.getInstance(emf);
         RoleDao roleDao = RoleDao.getInstance(emf);
-        GameService gameService = new GameService(gameDao, playerDao);
+        SecurityDAO securityDAO = SecurityDAO.getInstance(emf, roleDao);
+        GameService gameService = new GameService(gameDao, playerDao, securityDAO);
 
         SecurityController securityController = new SecurityController(emf, roleDao);
         GameController gameController = new GameController(gameService, emf);

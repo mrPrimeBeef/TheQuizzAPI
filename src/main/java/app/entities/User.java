@@ -29,6 +29,11 @@ public class User implements ISecurityUser {
     private Set<Role> roles = new HashSet<>();
 
     @ManyToMany
+    @JoinTable(
+            name = "user_game",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
     private List<Game> games;
 
     public User() {
@@ -37,6 +42,13 @@ public class User implements ISecurityUser {
     public User(String username, String password) {
         this.username = username;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    public void addGame(Game game) {
+        if (!games.contains(game)) {
+            games.add(game);
+            game.getUsers().add(this);
+        }
     }
 
     @Override
