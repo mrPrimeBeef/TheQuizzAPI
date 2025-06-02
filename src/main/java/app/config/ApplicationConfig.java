@@ -63,8 +63,7 @@ public class ApplicationConfig {
         });
 
         app.exception(Exception.class, (e, ctx) -> {
-            handleError(ctx, 500, "Unexpected error: " + e.getClass().getSimpleName() + " - " + e.getMessage() +
-                    ". Please contact support if the issue persists.");
+            handleError(ctx, 500, "Unexpected error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
         });
 
         return this;

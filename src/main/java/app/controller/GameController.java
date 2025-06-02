@@ -3,7 +3,9 @@ package app.controller;
 import java.util.List;
 
 
+import app.entities.enums.GameMode;
 import app.utils.Utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -43,15 +45,17 @@ public class GameController {
             List<Player> players = playerDao.findAllPlayersByGameId(gameid);
             Game activeGame = gameDao.findById(gameid);
 
+            activeGame.setGameMode(gameRequest.getGameMode());
+
             gameService.createGame(players, filteredQuestions, activeGame);
 
-            return getGameDTO(players, filteredQuestions);
+            return getGameDTO(players, filteredQuestions, activeGame.getGameMode());
         } catch (Exception e) {
             throw new ValidationException("Error creating game: " + e.getMessage());
         }
     }
 
-    private static @NotNull GameDTO getGameDTO(List<Player> players, List<Question> filteredQuestions) {
+    private static @NotNull GameDTO getGameDTO(List<Player> players, List<Question> filteredQuestions, GameMode gameMode) {
         List<PlayerNameAndPoints> playerNameAndPointsList = players.stream()
                 .map(player -> new PlayerNameAndPoints(player.getName(), player.getPoints()))
                 .toList();
@@ -63,7 +67,7 @@ public class GameController {
                 .toList();
         QuestionDTO questionDTO = new QuestionDTO(questionBodyList);
 
-        return new GameDTO(playerNamesDTO, questionDTO, 0);
+        return new GameDTO(playerNamesDTO, questionDTO, 0, gameMode);
     }
 
     private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {
@@ -100,7 +104,9 @@ public class GameController {
 
     public Integer getNumberOfPlayers(Context ctx) {
         String numberOfPlayers = ctx.pathParam("number");
-        return gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers), getUsernameFromJwt(ctx));
+        String userName = getUsernameFromJwt(ctx);
+        System.out.println(userName);
+        return gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers), userName);
     }
 
     public PlayerNamesDTO createPlayers(Context ctx) {
@@ -143,23 +149,49 @@ public class GameController {
 
     public static String getUsernameFromJwt(Context ctx) {
         String token = ctx.header("Authorization");
+
         if (token == null || !token.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Invalid or missing Authorization header");
         }
-        String SECRET_KEY;
-
-        if (System.getenv("DEPLOYED") != null) {
-            SECRET_KEY = System.getenv("SECRET_KEY");
-        } else {
-            SECRET_KEY = Utils.getPropertyValue("SECRET_KEY", "config.properties");
-        }
 
         token = token.substring(7); // Remove "Bearer " prefix
-        Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
 
-        return claims.getSubject(); // Assuming the username is stored in the "sub" claim
+        // Decode the JWT payload without verifying the signature
+        String[] parts = token.split("\\.");
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("Invalid JWT format");
+        }
+
+        String payload = new String(java.util.Base64.getUrlDecoder().decode(parts[1]));
+        com.fasterxml.jackson.databind.JsonNode claims = null;
+        try {
+            claims = new com.fasterxml.jackson.databind.ObjectMapper().readTree(payload);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return claims.get("sub").asText(); // Assuming the username is stored in the "sub" claim
     }
+
+//    public static String getUsernameFromJwt(Context ctx) {
+//        String token = ctx.header("Authorization");
+//        String SECRET_KEY;
+//
+//        if (token == null || !token.startsWith("Bearer ")) {
+//            throw new IllegalArgumentException("Invalid or missing Authorization header");
+//        }
+//
+//        if (System.getenv("DEPLOYED") != null) {
+//            SECRET_KEY = System.getenv("SECRET_KEY");
+//        } else {
+//            SECRET_KEY = Utils.getPropertyValue("SECRET_KEY", "config.properties");
+//        }
+//
+//        token = token.substring(7); // Remove "Bearer " prefix
+//        Claims claims = Jwts.parser()
+//                .setSigningKey(SECRET_KEY)
+//                .parseClaimsJws(token)
+//                .getBody();
+//
+//        return claims.getSubject(); // Assuming the username is stored in the "sub" claim
+//    }
 }

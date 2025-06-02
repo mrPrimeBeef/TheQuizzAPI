@@ -85,7 +85,6 @@ public class Routes {
 
             }, Role.ANYONE);
             post("/register", (ctx) -> {
-
                 securityController.register(ctx);
                 ctx.status(201);
             }, Role.ANYONE);

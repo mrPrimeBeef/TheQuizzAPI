@@ -1,5 +1,6 @@
 package app.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.entities.enums.GameMode;
@@ -18,7 +19,7 @@ public class Game {
     private Integer id;
 
     @ManyToMany(mappedBy = "games")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players;

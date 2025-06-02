@@ -75,7 +75,8 @@ public class GameService {
         return new GameDTO(
                 PlayerNamesDTO.convertFromEntityToDTO(game.getPlayers()),
                 updatedGame.questions(),
-                game.getTurn()
+                game.getTurn(),
+                game.getGameMode()
         );
     }
 
@@ -83,7 +84,8 @@ public class GameService {
         Game savedGame = gameDao.findById(gameId);
         return new GameDTO(PlayerNamesDTO.convertFromEntityToDTO(savedGame.getPlayers()),
                 QuestionDTO.convertFromEntityToDTO(savedGame.getQuestions()),
-                savedGame.getTurn()
+                savedGame.getTurn(),
+                savedGame.getGameMode()
         );
     }
 }

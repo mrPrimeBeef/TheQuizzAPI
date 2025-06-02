@@ -1,5 +1,6 @@
 package app.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,13 +29,13 @@ public class User implements ISecurityUser {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_game",
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
-    private List<Game> games;
+    private List<Game> games = new ArrayList<>();
 
     public User() {
     }
