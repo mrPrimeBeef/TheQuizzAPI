@@ -98,16 +98,14 @@ public class Routes {
 
             get("populate", (ctx) -> {
                 try {
-                    try {
-                        adminController.populateDatabaseRoles();
-                    } catch (Exception e) {
-                    } finally {
-                        adminController.populateDatabaseWithScienceComputersQuestions();
-                        ctx.status(200).result("Database now got data in it");
-                    }
-                    ctx.status(200);
+                    adminController.populateDatabaseRoles();
                 } catch (Exception e) {
+
+                } finally {
+                    adminController.populateDatabaseWithScienceComputersQuestions();
+                    ctx.status(200).result("Database now got data in it");
                 }
+                ctx.status(200);
             }, Role.ADMIN);
 
             put("/question", ctx -> {
@@ -120,7 +118,6 @@ public class Routes {
                 adminController.deleteQuestion(ctx);
                 ctx.status(200).result("The question is in the database is now gone");
             });
-
         };
     }
 }
