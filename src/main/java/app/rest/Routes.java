@@ -108,7 +108,7 @@ public class Routes {
                     ctx.status(200);
                 } catch (Exception e) {
                 }
-            }, Role.ADMIN, Role.ANYONE);
+            }, Role.ADMIN);
 
             put("/question", ctx -> {
                 int id = adminController.createQuestion(ctx);
