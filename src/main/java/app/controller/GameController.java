@@ -105,7 +105,6 @@ public class GameController {
     public Integer getNumberOfPlayers(Context ctx) {
         String numberOfPlayers = ctx.pathParam("number");
         String userName = getUsernameFromJwt(ctx);
-        System.out.println(userName);
         return gameService.createNumberOfPlayers(Integer.parseInt(numberOfPlayers), userName);
     }
 

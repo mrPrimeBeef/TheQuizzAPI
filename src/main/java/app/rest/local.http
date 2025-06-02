@@ -43,7 +43,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-POST http://localhost:7070/api/game/5/players/names
+POST http://localhost:7070/api/game/1/players/names
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

@@ -31,7 +31,7 @@ public class User implements ISecurityUser {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_game",
+            name = "users_game",
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
