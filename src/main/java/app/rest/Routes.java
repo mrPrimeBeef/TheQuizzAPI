@@ -63,7 +63,7 @@ public class Routes {
                 ctx.status(201).json(savedGameDTO);
             }, Role.ADMIN, Role.USER);
 
-            get("/savegame/{gameid}", (ctx) -> {
+            get("/savegame", (ctx) -> {
                 GameDTO savedGameDTO = gameController.getSavedGame(ctx);
                 ctx.status(201).json(savedGameDTO);
             }, Role.ADMIN, Role.USER);

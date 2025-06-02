@@ -139,7 +139,9 @@ public class GameController {
     }
 
     public GameDTO getSavedGame(Context ctx) {
-        Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
+        String username = getUsernameFromJwt(ctx);
+
+        Integer gameId = gameService.getLastestGameFromUserName(username);
 
         GameDTO savedGameDTO = gameService.getGame(gameId);
 

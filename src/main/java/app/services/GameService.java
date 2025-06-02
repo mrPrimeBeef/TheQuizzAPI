@@ -88,4 +88,8 @@ public class GameService {
                 savedGame.getGameMode()
         );
     }
+
+    public Integer getLastestGameFromUserName(String username) {
+        return gameDao.getLastedGameFromUsername(username);
+    }
 }
