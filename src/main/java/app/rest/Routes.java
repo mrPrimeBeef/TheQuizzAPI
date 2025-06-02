@@ -106,7 +106,7 @@ public class Routes {
                     ctx.status(200).result("Database now got data in it");
                 }
                 ctx.status(200);
-            }, Role.ADMIN);
+            }, Role.ADMIN, Role.ANYONE);
 
             put("/question", ctx -> {
                 int id = adminController.createQuestion(ctx);
