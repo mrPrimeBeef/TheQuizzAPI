@@ -17,44 +17,45 @@ import app.utils.ApiReader;
 public class OpentdbService {
     // https://opentdb.com/api_config.php
 
-    public List<Question> getComputerSienceQuestions() {
+    public List<Question> getQuestionsFromURL(String url) {
         List<Question> questionsList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         String token = getToken(objectMapper);
 
-        String url = "https://opentdb.com/api.php?amount=50&category=18&token=" + token;
+        // String urlForRequest = url + token;
+        String urlForRequest = url;
 
         boolean hasMoreQuestions = true; // Flag til at tjekke, om der stadig er spørgsmål
 
         while (hasMoreQuestions) {
-                try {
-                    String json = ApiReader.getDataFromUrl(url);
-                    if (json != null) {
-                        QuestionResponseDTO response = objectMapper.readValue(json, QuestionResponseDTO.class);
+            try {
+                String json = ApiReader.getDataFromUrl(urlForRequest);
+                if (json != null) {
+                    QuestionResponseDTO response = objectMapper.readValue(json, QuestionResponseDTO.class);
 
-                        // Stop hvis API'et ikke returnerer flere spørgsmål
-                        if (response.results().isEmpty()) {
-                            System.out.println("Ingen flere spørgsmål fundet. Stopper...");
-                            hasMoreQuestions = false;
-                            break;
-                        }
-                        // Tilføj de hentede spørgsmål til listen
-                        for (QuestionResponseBody b : response.results()) {
-                            Difficulty difficulty = Difficulty.valueOf(b.difficulty().toUpperCase());
-                            questionsList.add(new Question(b.question(), b.correct_answer(), b.incorrect_answers(), b.category(), difficulty));
-                        }
+                    // Stop hvis API'et ikke returnerer flere spørgsmål
+                    if (response.results().isEmpty()) {
+                        System.out.println("Ingen flere spørgsmål fundet. Stopper...");
+                        hasMoreQuestions = false;
+                        break;
                     }
-                } catch (Exception e) {
-                    throw new ApiException("Error calling api", e);
+                    // Tilføj de hentede spørgsmål til listen
+                    for (QuestionResponseBody b : response.results()) {
+                        Difficulty difficulty = Difficulty.valueOf(b.difficulty().toUpperCase());
+                        questionsList.add(new Question(b.question(), b.correct_answer(), b.incorrect_answers(), b.category(), difficulty));
+                    }
                 }
-                // Vent 5 sekunder før næste forsøg
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+            } catch (Exception e) {
+                throw new ApiException("Error calling api", e);
+            }
+            // Vent 5 sekunder før næste forsøg
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         return questionsList;
     }

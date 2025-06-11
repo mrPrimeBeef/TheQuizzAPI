@@ -34,7 +34,15 @@ Content-Type: application/json
 %}
 
 ###
-GET http://localhost:7070/api/admin/populate
+GET http://localhost:7070/api/admin/populate/roles
+Authorization: Bearer {{token}}
+
+###
+GET http://localhost:7070/api/admin/populate/computer
+Authorization: Bearer {{token}}
+
+###
+GET http://localhost:7070/api/admin/populate/general
 Authorization: Bearer {{token}}
 
 ###

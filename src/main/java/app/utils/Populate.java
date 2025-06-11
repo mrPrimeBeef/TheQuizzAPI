@@ -53,18 +53,20 @@ public class Populate {
         QuestionDao questionDao = QuestionDao.getInstance(emf);
         OpentdbService opentdbService = new OpentdbService();
 
-        List<Question> questions = opentdbService.getComputerSienceQuestions();
+        String url = "https://opentdb.com/api.php?amount=50&category=18&token=";
+        List<Question> questions = opentdbService.getQuestionsFromURL(url);
 
         for (Question q : questions) {
             questionDao.create(q);
         }
     }
 
-    public static void addQuestions(EntityManagerFactory emf) {
+    public static void addGeneralKnowledgeQuestions(EntityManagerFactory emf) {
         QuestionDao questionDao = QuestionDao.getInstance(emf);
         OpentdbService opentdbService = new OpentdbService();
 
-        List<Question> questions = opentdbService.getComputerSienceQuestions();
+        String url = "https://opentdb.com/api.php?amount=50&category=9";
+        List<Question> questions = opentdbService.getQuestionsFromURL(url);
 
         for (Question q : questions) {
             questionDao.create(q);

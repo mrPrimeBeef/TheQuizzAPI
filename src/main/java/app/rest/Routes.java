@@ -96,17 +96,21 @@ public class Routes {
             get("/test", ctx -> ctx.json(jsonMapper.createObjectNode().put("msg", "Hello from Admin"))
                     , Role.ADMIN);
 
-            get("populate", (ctx) -> {
-                try {
-                    adminController.populateDatabaseRoles();
-                } catch (Exception e) {
-
-                } finally {
-                    adminController.populateDatabaseWithScienceComputersQuestions();
-                    ctx.status(200).result("Database now got data in it");
-                }
+            get("populate/roles", (ctx) -> {
+                adminController.populateDatabaseRoles();
                 ctx.status(200);
             }, Role.ADMIN);
+
+            get("populate/computer", (ctx) -> {
+                adminController.populateDatabaseWithScienceComputersQuestions();
+                ctx.status(200).result("Database now got data in it");
+            }, Role.ADMIN);
+
+            get("populate/general", (ctx) -> {
+                adminController.populateDatabaseWithGenerelKnowledgdeQuestions();
+                ctx.status(200).result("Database now got data in it");
+            }, Role.ADMIN);
+
 
             put("/question", ctx -> {
                 int id = adminController.createQuestion(ctx);
