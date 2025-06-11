@@ -1,6 +1,5 @@
 package app.daos;
 
-import app.entities.Player;
 import app.exceptions.DaoException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -24,7 +23,8 @@ public class QuestionDao extends AbstractDao<Question, Integer> {
         return instance;
     }
 
-    public List<Question> findQuestionWithCatagory(String category, Integer limit) {
+    // TODO Noget galt her returnere 0 spørgsmål
+    public List<Question> findQuestionWithCategory(String category, Integer limit) {
         try (EntityManager em = emf.createEntityManager()) {
             String jpql = "SELECT q FROM Question q WHERE q.category = :category"; // Brug ":" foran parameteren
             TypedQuery<Question> query = em.createQuery(jpql, Question.class);

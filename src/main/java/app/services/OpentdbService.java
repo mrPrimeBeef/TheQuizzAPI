@@ -25,14 +25,14 @@ public class OpentdbService {
         String token = getToken(objectMapper);
 
         // String urlForRequest = url + token;
-        String urlForRequest = url;
+        // String urlForRequest = url;
 
         boolean hasMoreQuestions = true; // Flag til at tjekke, om der stadig er spørgsmål
 
         Integer count = 0;
         while (count < times) {
             try {
-                String json = ApiReader.getDataFromUrl(urlForRequest);
+                String json = ApiReader.getDataFromUrl(url);
                 if (json != null) {
                     QuestionResponseDTO response = objectMapper.readValue(json, QuestionResponseDTO.class);
 

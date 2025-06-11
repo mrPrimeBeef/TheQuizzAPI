@@ -65,16 +65,10 @@ public class GameController {
     }
 
     private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {
-        List<Question> questions = questionDao.findQuestionWithCatagory(gameRequest.getCategory(), gameRequest.getLimit());
+        List<Question> questions = questionDao.findQuestionWithCategory(gameRequest.getCategory(), gameRequest.getLimit());
 
-        String category = gameRequest.getCategory();
-        List<String> uniqueCategories = questions.stream()
-                .map(Question::getCategory)
-                .distinct()
-                .toList();
-
-        if (category == null || !uniqueCategories.contains(category)) {
-            throw new ValidationException("Invalid category: " + category);
+        if (questions == null) {
+            throw new ValidationException("Invalid category: " + gameRequest.getCategory());
         }
 
         String difficulty = gameRequest.getDifficulty();
@@ -89,11 +83,7 @@ public class GameController {
         if (limit < 0 || limit > 50) {
             throw new ValidationException("Invalid question limit: " + limit);
         }
-
-        return questions.stream()
-                .filter(question -> question.getDifficulty().name().equals(difficulty))
-                .limit(limit)
-                .toList();
+        return questions;
     }
 
     public Integer getNumberOfPlayers(Context ctx) {
