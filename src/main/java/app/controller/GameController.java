@@ -67,7 +67,7 @@ public class GameController {
     private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {
         List<Question> questions = questionDao.findQuestionWithCategory(gameRequest.getCategory(), gameRequest.getLimit());
 
-        if (questions == null) {
+        if (questions == null || questions.isEmpty()) {
             throw new ValidationException("Invalid category: " + gameRequest.getCategory());
         }
 

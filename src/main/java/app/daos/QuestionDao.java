@@ -23,8 +23,9 @@ public class QuestionDao extends AbstractDao<Question, Integer> {
         return instance;
     }
 
-    // TODO Noget galt her returnere 0 spørgsmål
     public List<Question> findQuestionWithCategory(String category, Integer limit) {
+        category = "Science & Nature".equals(category) ? "Science &amp; Nature" : category;
+
         try (EntityManager em = emf.createEntityManager()) {
             String jpql = "SELECT q FROM Question q WHERE q.category = :category"; // Brug ":" foran parameteren
             TypedQuery<Question> query = em.createQuery(jpql, Question.class);

@@ -55,7 +55,6 @@ public class GameService {
         return game.getId();
     }
 
-
     public PlayerNamesDTO getScores(Integer gameId) {
         List<Player> players = playerDao.findAllPlayersByGameId(gameId);
         return PlayerNamesDTO.convertFromEntityToDTO(players);
