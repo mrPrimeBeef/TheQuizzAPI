@@ -37,19 +37,19 @@ public class GameController {
         try {
             List<Question> filteredQuestions = validatInputAndReturnFilteredQuestions(gameRequest);
 
-            Integer gameid = Integer.parseInt(ctx.pathParam("gameid"));
-            List<Player> players = playerDao.findAllPlayersByGameId(gameid);
-            Game activeGame = gameDao.findById(gameid);
+            Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
+            List<Player> players = playerDao.findAllPlayersByGameId(gameId);
+            Game activeGame = gameDao.findById(gameId);
 
             gameService.createGame(players, filteredQuestions, activeGame, gameRequest.getGameMode());
 
-            return getGameDTO(players, filteredQuestions, activeGame.getGameMode());
+            return getGameDTO(gameId, players, filteredQuestions, activeGame.getGameMode());
         } catch (Exception e) {
             throw new ValidationException("Error creating game: " + e.getMessage());
         }
     }
 
-    private static @NotNull GameDTO getGameDTO(List<Player> players, List<Question> filteredQuestions, GameMode gameMode) {
+    private static @NotNull GameDTO getGameDTO(Integer gameId, List<Player> players, List<Question> filteredQuestions, GameMode gameMode) {
         List<PlayerNameAndPoints> playerNameAndPointsList = players.stream()
                 .map(player -> new PlayerNameAndPoints(player.getName(), player.getPoints()))
                 .toList();
@@ -61,7 +61,7 @@ public class GameController {
                 .toList();
         QuestionDTO questionDTO = new QuestionDTO(questionBodyList);
 
-        return new GameDTO(playerNamesDTO, questionDTO, 0, gameMode);
+        return new GameDTO(gameId, playerNamesDTO, questionDTO, 0, gameMode);
     }
 
     private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {

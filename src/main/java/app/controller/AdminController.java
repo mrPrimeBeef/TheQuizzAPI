@@ -1,8 +1,5 @@
 package app.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -11,8 +8,6 @@ import app.daos.RoleDao;
 import app.daos.SecurityDAO;
 import app.entities.Question;
 import app.utils.Populate;
-import app.dtos.QuestionBody;
-import app.dtos.QuestionDTO;
 
 public class AdminController {
     private EntityManagerFactory emf;
@@ -28,7 +23,7 @@ public class AdminController {
     }
 
     public void populateDatabaseWithScienceComputersQuestions() {
-        Populate.addQuestions(emf);
+        Populate.addComputerSienceQuestions(emf);
     }
 
     public void populateDatabaseRoles() {

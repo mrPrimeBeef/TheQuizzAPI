@@ -16,7 +16,7 @@ public class Populate {
         SecurityDAO securityDAO = SecurityDAO.getInstance(emf, roleDao);
 
         securityDAO.createRolesInDataBaseAndAdmin();
-        addQuestions(emf);
+        addComputerSienceQuestions(emf);
         usersAndRoles(securityDAO);
     }
 
@@ -47,6 +47,17 @@ public class Populate {
 
         securityDAO.createUser(user1);
         securityDAO.createUser(user2);
+    }
+
+    public static void addComputerSienceQuestions(EntityManagerFactory emf) {
+        QuestionDao questionDao = QuestionDao.getInstance(emf);
+        OpentdbService opentdbService = new OpentdbService();
+
+        List<Question> questions = opentdbService.getComputerSienceQuestions();
+
+        for (Question q : questions) {
+            questionDao.create(q);
+        }
     }
 
     public static void addQuestions(EntityManagerFactory emf) {

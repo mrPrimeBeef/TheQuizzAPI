@@ -74,7 +74,7 @@ public class GameService {
         game.setTurn(turn);
         gameDao.update(game);
 
-        return new GameDTO(
+        return new GameDTO( gameId,
                 PlayerNamesDTO.convertFromEntityToDTO(game.getPlayers()),
                 updatedGame.questions(),
                 game.getTurn(),
@@ -84,7 +84,8 @@ public class GameService {
 
     public GameDTO getGame(Integer gameId) {
         Game savedGame = gameDao.findById(gameId);
-        return new GameDTO(PlayerNamesDTO.convertFromEntityToDTO(savedGame.getPlayers()),
+        return new GameDTO( gameId,
+                PlayerNamesDTO.convertFromEntityToDTO(savedGame.getPlayers()),
                 QuestionDTO.convertFromEntityToDTO(savedGame.getQuestions()),
                 savedGame.getTurn(),
                 savedGame.getGameMode()
