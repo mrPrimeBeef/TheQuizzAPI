@@ -65,7 +65,7 @@ public class GameController {
     }
 
     private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {
-        List<Question> questions = questionDao.findAll();
+        List<Question> questions = questionDao.findQuestionWithCatagory(gameRequest.getCategory(), gameRequest.getLimit());
 
         String category = gameRequest.getCategory();
         List<String> uniqueCategories = questions.stream()

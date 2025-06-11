@@ -17,7 +17,7 @@ import app.utils.ApiReader;
 public class OpentdbService {
     // https://opentdb.com/api_config.php
 
-    public List<Question> getQuestionsFromURL(String url) {
+    public List<Question> getQuestionsFromURL(String url, Integer times) {
         List<Question> questionsList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -29,7 +29,8 @@ public class OpentdbService {
 
         boolean hasMoreQuestions = true; // Flag til at tjekke, om der stadig er spørgsmål
 
-        while (hasMoreQuestions) {
+        Integer count = 0;
+        while (count < times) {
             try {
                 String json = ApiReader.getDataFromUrl(urlForRequest);
                 if (json != null) {
@@ -56,6 +57,7 @@ public class OpentdbService {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            count++;
         }
         return questionsList;
     }

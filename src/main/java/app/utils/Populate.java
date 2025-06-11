@@ -54,7 +54,7 @@ public class Populate {
         OpentdbService opentdbService = new OpentdbService();
 
         String url = "https://opentdb.com/api.php?amount=50&category=18&token=";
-        List<Question> questions = opentdbService.getQuestionsFromURL(url);
+        List<Question> questions = opentdbService.getQuestionsFromURL(url, 3);
 
         for (Question q : questions) {
             questionDao.create(q);
@@ -66,7 +66,7 @@ public class Populate {
         OpentdbService opentdbService = new OpentdbService();
 
         String url = "https://opentdb.com/api.php?amount=50&category=9";
-        List<Question> questions = opentdbService.getQuestionsFromURL(url);
+        List<Question> questions = opentdbService.getQuestionsFromURL(url,5);
 
         for (Question q : questions) {
             questionDao.create(q);
