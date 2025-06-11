@@ -34,6 +34,10 @@ GET https://thequizzapi.sem2.dk/api/admin/populate
 Authorization: Bearer {{token}}
 
 ###
+GET https://thequizzapi.sem2.dk/api/admin/populate/general
+Authorization: Bearer {{token}}
+
+###
 POST https://thequizzapi.sem2.dk/api/game/2
 Authorization: Bearer {{token}}
 Content-Type: application/json

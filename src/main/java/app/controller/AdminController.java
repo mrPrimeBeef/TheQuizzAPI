@@ -28,6 +28,9 @@ public class AdminController {
     public void populateDatabaseWithGenerelKnowledgdeQuestions() {
         Populate.addGeneralKnowledgeQuestions(emf);
     }
+    public void populateDatabaseWithSienceAndNatureQuestions() {
+        Populate.addSienceAndNatureQuestions(emf);
+    }
 
     public void populateDatabaseRoles() {
         Populate.usersAndRoles(securityDAO);
@@ -45,6 +48,4 @@ public class AdminController {
         int removeId = Integer.parseInt(ctx.pathParam("questionid"));
         questionDao.delete(removeId);
     }
-
-
 }

@@ -111,6 +111,11 @@ public class Routes {
                 ctx.status(200).result("Database now got data in it");
             }, Role.ADMIN);
 
+            get("populate/nature", (ctx) -> {
+                adminController.populateDatabaseWithSienceAndNatureQuestions();
+                ctx.status(200).result("Database now got data in it");
+            }, Role.ADMIN);
+
 
             put("/question", ctx -> {
                 int id = adminController.createQuestion(ctx);

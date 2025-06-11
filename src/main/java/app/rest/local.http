@@ -46,6 +46,10 @@ GET http://localhost:7070/api/admin/populate/general
 Authorization: Bearer {{token}}
 
 ###
+GET http://localhost:7070/api/admin/populate/nature
+Authorization: Bearer {{token}}
+
+###
 POST http://localhost:7070/api/game/2
 Authorization: Bearer {{token}}
 Content-Type: application/json

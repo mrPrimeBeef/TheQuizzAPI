@@ -72,4 +72,16 @@ public class Populate {
             questionDao.create(q);
         }
     }
+
+    public static void addSienceAndNatureQuestions(EntityManagerFactory emf) {
+        QuestionDao questionDao = QuestionDao.getInstance(emf);
+        OpentdbService opentdbService = new OpentdbService();
+
+        String url = "https://opentdb.com/api.php?amount=50&category=17";
+        List<Question> questions = opentdbService.getQuestionsFromURL(url,5);
+
+        for (Question q : questions) {
+            questionDao.create(q);
+        }
+    }
 }
