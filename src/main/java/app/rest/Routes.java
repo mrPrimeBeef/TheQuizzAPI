@@ -49,7 +49,7 @@ public class Routes {
             }, Role.USER, Role.ADMIN);
 
             post("/{gameid}/questions", (ctx) -> {
-                GameDTO gameDTO = gameController.makeGame(ctx);
+                GameDTO gameDTO = gameController.startGame(ctx);
                 ctx.status(201).json(gameDTO);
             }, Role.USER, Role.ADMIN);
 

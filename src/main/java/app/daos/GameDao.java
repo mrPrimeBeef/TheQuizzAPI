@@ -22,7 +22,7 @@ public class GameDao extends AbstractDao<Game, Integer> {
 
     public Integer getLastedGameFromUsername(String username) {
         try (EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT ug.gameId FROM users_game ug WHERE ug.username = :username ORDER BY ug.gameId DESC";
+            String jpql = "SELECT g.id FROM User u JOIN u.games g WHERE u.username = :username ORDER BY g.id DESC";
             return em.createQuery(jpql, Integer.class)
                     .setParameter("username", username)
                     .setMaxResults(1)

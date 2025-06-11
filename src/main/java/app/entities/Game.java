@@ -28,13 +28,13 @@ public class Game {
 
     private Integer turn;
 
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.EAGER)
     @JoinTable(
             name = "game_question",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
-    private List<Question> questions;
+    private List<Question> questions = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private GameMode gameMode;

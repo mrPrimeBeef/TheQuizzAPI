@@ -4,7 +4,6 @@ import java.util.List;
 
 
 import app.entities.enums.GameMode;
-import app.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
@@ -17,9 +16,6 @@ import app.entities.Question;
 import app.exceptions.ValidationException;
 import app.services.GameService;
 import org.jetbrains.annotations.NotNull;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 
 
 public class GameController {
@@ -36,7 +32,7 @@ public class GameController {
         this.gameDao = GameDao.getInstance(emf);
     }
 
-    public GameDTO makeGame(Context ctx) throws ValidationException {
+    public GameDTO startGame(Context ctx) throws ValidationException {
         GameRequestDTO gameRequest = ctx.bodyAsClass(GameRequestDTO.class);
         try {
             List<Question> filteredQuestions = validatInputAndReturnFilteredQuestions(gameRequest);
@@ -45,9 +41,7 @@ public class GameController {
             List<Player> players = playerDao.findAllPlayersByGameId(gameid);
             Game activeGame = gameDao.findById(gameid);
 
-            activeGame.setGameMode(gameRequest.getGameMode());
-
-            gameService.createGame(players, filteredQuestions, activeGame);
+            gameService.createGame(players, filteredQuestions, activeGame, gameRequest.getGameMode());
 
             return getGameDTO(players, filteredQuestions, activeGame.getGameMode());
         } catch (Exception e) {
@@ -129,6 +123,7 @@ public class GameController {
 
     public GameDTO saveGame(Context ctx) {
         Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
+
         Integer turn = Integer.parseInt(ctx.pathParam("turn"));
 
         GameDTO updatedGame = ctx.bodyAsClass(GameDTO.class);

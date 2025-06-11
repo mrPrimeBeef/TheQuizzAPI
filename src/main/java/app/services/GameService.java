@@ -10,6 +10,7 @@ import app.entities.Game;
 import app.entities.Player;
 import app.entities.Question;
 import app.entities.User;
+import app.entities.enums.GameMode;
 
 public class GameService {
     private final GameDao gameDao;
@@ -22,9 +23,10 @@ public class GameService {
         this.securityDAO = securityDAO;
     }
 
-    public Game createGame(List<Player> players, List<Question> questions, Game activeGame) {
+    public Game createGame(List<Player> players, List<Question> questions, Game activeGame, GameMode gameMode) {
         activeGame.setPlayers(players);
         activeGame.setQuestions(questions);
+        activeGame.setGameMode(gameMode);
 
         return gameDao.update(activeGame);
     }
