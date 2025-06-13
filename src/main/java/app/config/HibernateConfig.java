@@ -46,6 +46,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(Game.class);
         configuration.addAnnotatedClass(Player.class);
         configuration.addAnnotatedClass(Question.class);
+        configuration.addAnnotatedClass(UserCategoryOffset.class);
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {

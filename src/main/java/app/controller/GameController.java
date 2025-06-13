@@ -35,7 +35,8 @@ public class GameController {
     public GameDTO startGame(Context ctx) throws ValidationException {
         GameRequestDTO gameRequest = ctx.bodyAsClass(GameRequestDTO.class);
         try {
-            List<Question> filteredQuestions = validatInputAndReturnFilteredQuestions(gameRequest);
+            String userName = getUsernameFromJwt(ctx);
+            List<Question> filteredQuestions = validatInputAndReturnFilteredQuestions(gameRequest, userName);
 
             Integer gameId = Integer.parseInt(ctx.pathParam("gameid"));
             List<Player> players = playerDao.findAllPlayersByGameId(gameId);
@@ -64,8 +65,8 @@ public class GameController {
         return new GameDTO(gameId, playerNamesDTO, questionDTO, 0, gameMode);
     }
 
-    private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest) throws ValidationException {
-        List<Question> questions = questionDao.findQuestionWithCategory(gameRequest.getCategory(), gameRequest.getLimit());
+    private List<Question> validatInputAndReturnFilteredQuestions(GameRequestDTO gameRequest, String userName) throws ValidationException {
+        List<Question> questions = questionDao.findQuestionWithCategory(userName,gameRequest.getCategory(), gameRequest.getLimit());
 
         if (questions == null || questions.isEmpty()) {
             throw new ValidationException("Invalid category: " + gameRequest.getCategory());
