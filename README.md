@@ -18,6 +18,5 @@ If you have any questions or feedback, you can create an issue on [GitHub](https
 
 The project retrieves quizzes from:
 
-- [QuizAPI.io](https://quizapi.io/categories)
 - [Open Trivia Database](https://opentdb.com/api_config.php)
 
