@@ -99,7 +99,7 @@ public class Routes {
             get("populate/roles", (ctx) -> {
                 adminController.populateDatabaseRoles();
                 ctx.status(200);
-            }, Role.ADMIN);
+            }, Role.ANYONE);
 
             get("populate/computer", (ctx) -> {
                 adminController.populateDatabaseWithScienceComputersQuestions();
